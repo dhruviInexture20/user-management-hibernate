@@ -1,0 +1,55 @@
+package bean;
+
+public class AddressBean {
+	
+	private int addressid;
+	private int userid;
+	private String streetAddress;
+	private String city;
+	private String Country;
+	private String state;
+	private String postalCode;
+	
+	public int getAddressid() {
+		return addressid;
+	}
+	public void setAddressid(int addressid) {
+		this.addressid = addressid;
+	}
+	public int getUserid() {
+		return userid;
+	}
+	public void setUserid(int userid) {
+		this.userid = userid;
+	}
+	public String getStreetAddress() {
+		return streetAddress;
+	}
+	public void setStreetAddress(String streetAddress) {
+		this.streetAddress = streetAddress;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
+	public String getCountry() {
+		return Country;
+	}
+	public void setCountry(String country) {
+		Country = country;
+	}
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	public String getPostalCode() {
+		return postalCode;
+	}
+	public void setPostalCode(String postalCode) {
+		this.postalCode = postalCode;
+	}
+}
