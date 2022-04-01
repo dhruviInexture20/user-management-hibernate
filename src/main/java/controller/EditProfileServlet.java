@@ -26,6 +26,8 @@ public class EditProfileServlet extends HttpServlet {
 		
 		BasicConfigurator.configure();
 		
+		
+		
 		logger.info("in edit servlet");
 	}
 

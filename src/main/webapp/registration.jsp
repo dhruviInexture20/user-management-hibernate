@@ -187,6 +187,8 @@
 									value = <c:out value="${address.getCity() }" />
 									>
 							</div>
+							
+							
 							<!-- country -->
 							<div class="form-group col-md-6">
 								<label class="control-label" for="country_0">Country</label> 
@@ -200,7 +202,7 @@
 							<!-- state -->
 							<div class="form-group col-md-6">
 								<label class="control-label" for="state_0">State</label> 
-								<select id="state_${count }" name="state" class="form-control" required></select>
+								<select id="state_${count }" name="state" class="form-control" required  ></select>
 							</div>
 
 							<div class="form-group col-md-6">
