@@ -8,7 +8,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import bean.UserBean;
+import dao.UserDao;
 import dao.UserDaoImpl;
+import service.UserService;
+import service.UserServiceImpl;
 import utility.ServletUtility;
 
 /**
@@ -27,14 +30,16 @@ public class LoginServlet extends HttpServlet {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		
-		UserDaoImpl userDao = new UserDaoImpl();
-		user = userDao.userLogin(email);
+		UserService userService = new UserServiceImpl();
+		user = userService.getUser(email, password);
+		
 		// login as admin
 		if(user != null && user.getRole().equals("admin")) {
 			HttpSession session = request.getSession();
 			session.setAttribute("adminData", user);
 			response.sendRedirect("adminDashboard.jsp");
 		}
+		
 		// login as user
 		else if(user != null && user.getRole().equals("user")) {
 			HttpSession session = request.getSession();
@@ -43,11 +48,9 @@ public class LoginServlet extends HttpServlet {
 		}
 		// invalid data
 		else {
-			ServletUtility.setErrorMessage("Invalid User", request, response);
+			//ServletUtility.setErrorMessage("Invalid User", request);
+			request.setAttribute("error", "Invalid User");
 			request.getRequestDispatcher("login.jsp").forward(request, response);
 		}
-		
-		
-		
 	}
 }

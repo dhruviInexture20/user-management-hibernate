@@ -47,7 +47,7 @@ public class ForgetPasswordServlet extends HttpServlet {
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			ServletUtility.setErrorMessage("Somting Wrong", request, response);
+			ServletUtility.setErrorMessage("Somting Wrong", request);
 		}
 		// forward
 		request.getRequestDispatcher("login.jsp").forward(request, response);;

@@ -3,6 +3,8 @@ package bean;
 import java.io.InputStream;
 import java.util.List;
 
+import utility.PasswordSecurity;
+
 
 public class UserBean {
 	private int userid;
@@ -55,12 +57,7 @@ public class UserBean {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
+	
 	public String getDob() {
 		return dob;
 	}
@@ -93,7 +90,26 @@ public class UserBean {
 		this.role = role;
 	}
 	
+	// return normal password
+	public String getPassword() {
+		return password;
+	}
 	
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	// return password in encrypted form
+	public String getProtectedPassword() throws Exception {
+		PasswordSecurity ps = new PasswordSecurity();
+		return ps.decrypt(this.password);
+	}
+	
+	// convert encrypted password to normal form and set password
+	public void setPasswordString(String encPass) throws Exception {
+		PasswordSecurity ps = new PasswordSecurity();
+		setPassword(ps.decrypt(encPass));
+	}
 	
 	
 }

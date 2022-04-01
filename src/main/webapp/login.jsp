@@ -1,6 +1,6 @@
 <%@page import="utility.ServletUtility"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1" %>
+    pageEncoding="ISO-8859-1" isELIgnored="false" session="true"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
@@ -13,24 +13,11 @@
     <title>User Login</title>
 
     <!-- Bootstrap -->
-    <link href="assets/library/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-        .wrapper {
-            width: 500px;
-            margin: 20px auto;
-            border: 1px solid black;
-            border-radius: 10px;
-            padding: 10px;
-            box-shadow: 15px 15px 5px grey;
-        }
-        .links{
-            margin: 10px 0px 15px 0px;
-        }
-        .links a {
-        	padding-right: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="assets/library/bootstrap/css/bootstrap.min.css" >
+    
+    <!-- custom css -->
+	<link rel="stylesheet" href="assets/css/login.css">
+   
 </head>
 
 <body>
@@ -38,10 +25,10 @@
     <div class="wrapper">
         <h1 class="text-center">User Login</h1>
         <div class="col-md-12">
-        	<c:out value= "<%= ServletUtility.getErrorMessage(request, response) %>" />	
-            <c:out value= "<%= ServletUtility.getSuccessMessage(request) %>" />
+        		<c:out value= "${ requestScope.error }" />
+        		
         </div>
-        <form action="LoginServlet" method="post">
+        <form action="LoginServlet" method="post" id="login_form">
             <div class="form-group">
                 <label for="email">Email address</label>
                 <input type="email" class="form-control" id="email" name="email" placeholder="Email">
@@ -61,6 +48,7 @@
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="assets/library/jquery/jquery-3.6.0.min.js"></script>
     <script src="assets/library/bootstrap/js/bootstrap.min.js"></script>
+	<script src="assets/library/jquery-validation-1.19.3/dist/jquery.validate.js"></script>
    	<script src="assets/js/login.js"></script>
 </body>
 

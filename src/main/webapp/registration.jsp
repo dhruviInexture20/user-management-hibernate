@@ -12,23 +12,38 @@
 <link href="assets/library/bootstrap/css/bootstrap.min.css"
 	rel="stylesheet">
 <link href="assets/css/registration.css" rel="stylesheet">
+
 </head>
 
 
 <body>
-
-	<jsp:useBean id="userData" class="bean.UserBean" scope="session"/>
- 
+ 	
 	<section>
 		<div class="main container">
+		
+	 <c:forEach items="${userData.getAddressList() }" var="address">
+        <tr>
+            <td><c:out value="${address.getState()}"/></td>
+            <td> <c:out value="${address.getCity()}"/></td>  
+        </tr>
+    </c:forEach>
+		
+		
+		
 			<h1 class="text-center">User Registration</h1>
-			<div class="col-md-12">
-				<c:out value="<%=ServletUtility.getSuccessMessage(request)%>" />
-				<c:out value="<%=ServletUtility.getErrorMessage(request, response)%>" />
+			<div class="col-md-12" class="msg">
+				<c:out value= "${ errorMsg }" />				
+				<c:out value= "${ requestScope.success }" />
+				<c:out value= "${ requestScope.error }" />
+				
+				
 			</div>
-			<form id="registration_form" action="RegistrationServlet"
+			<form id="registration_form" 
+				action= "<c:if test="${empty userData}">RegistrationServlet </c:if>
+						<c:if test="${not empty userData}">EditProfileServlet</c:if>" 
 				method="post" enctype="multipart/form-data">
 				<div class="col-md-12">
+				
 					<!-- first Name -->
 					<div class="form-group col-md-6">
 						<label for="firstname">First Name</label> <input type="text"
@@ -56,7 +71,11 @@
 						<input type="text"
 							class="form-control" id="email" name="email" placeholder="Email"
 							required
-							value = <c:out value='${userData.getEmail() }'/> >
+							value = <c:out value='${userData.getEmail() }'/> 
+							<c:if test="${not empty userData}">  
+   								disabled  
+							</c:if>  
+							>
 					</div>
 
 					<!-- phone -->
@@ -141,15 +160,21 @@
 						<img id="imgPreview" src="#" alt="profile pic">
 					</div>
 				</div>
-
+				
+				
+				<c:set var="count" value="0" scope="page" />
+				<c:forEach items="${userData.getAddressList() }" var="address">
+				
 				<!-- Address  -->
 				<div id="main-container">
 					<div class="container-item col-md-12">
 						<!-- street address -->
 						<div class="form-group col-md-12">
 							<label class="control-label" for="address_0">Street
-								Address</label> <input class="form-control" type="text" id="address_0"
-								name="address" required>
+								Address</label> <input class="form-control" type="text" id="address_${count }"
+								name="address" required 
+								value = <c:out value="${address.getStreetAddress() }" />
+								>
 						</div>
 						<br>
 
@@ -157,13 +182,15 @@
 						<div class="col-md-12">
 							<div class="form-group col-md-6">
 								<label class="control-label" for="city_0">City</label> <input
-									class="form-control" type="text" id="city_0" name="city"
-									required>
+									class="form-control" type="text" id="city_${count }" name="city"
+									required
+									value = <c:out value="${address.getCity() }" />
+									>
 							</div>
 							<!-- country -->
 							<div class="form-group col-md-6">
-								<label class="control-label" for="country_0">Country</label> <select
-									id="country_0" name="country" class="form-control" required></select>
+								<label class="control-label" for="country_0">Country</label> 
+								<select id="country_${count }" name="country" class="form-control" required ></select>
 							</div>
 						</div>
 
@@ -172,14 +199,16 @@
 						<div class="col-md-12">
 							<!-- state -->
 							<div class="form-group col-md-6">
-								<label class="control-label" for="state_0">State</label> <select
-									id="state_0" name="state" class="form-control" required></select>
+								<label class="control-label" for="state_0">State</label> 
+								<select id="state_${count }" name="state" class="form-control" required></select>
 							</div>
 
 							<div class="form-group col-md-6">
 								<label class="control-label" for="postal_code_0">PostalCode</label>
-								<input type="text" name="postal_code" id="postal_code_0"
-									class="form-control" required>
+								<input type="text" name="postal_code" id="postal_code_${count }"
+									class="form-control" required
+									value = <c:out value="${address.getPostalCode() }" />
+									>
 							</div>
 						</div>
 						<br>
@@ -192,17 +221,88 @@
 						<br>
 					</div>
 				</div>
+				 <c:set var="count" value="${count + 1 }" scope="page" /> 
+				</c:forEach>
+				
+				<c:if test="${empty userData}">  
+   				
+   				
+   				<div id="main-container">
+					<div class="container-item col-md-12">
+						<!-- street address -->
+						<div class="form-group col-md-12">
+							<label class="control-label" for="address_0">Street
+								Address</label> <input class="form-control" type="text" id="address_${count }"
+								name="address" required 
+								value = <c:out value="${address.getStreetAddress() }" />
+								>
+						</div>
+						<br>
+
+						<!-- city -->
+						<div class="col-md-12">
+							<div class="form-group col-md-6">
+								<label class="control-label" for="city_0">City</label> <input
+									class="form-control" type="text" id="city_${count }" name="city"
+									required
+									value = <c:out value="${address.getCity() }" />
+									>
+							</div>
+							<!-- country -->
+							<div class="form-group col-md-6">
+								<label class="control-label" for="country_0">Country</label> 
+								<select id="country_${count }" name="country" class="form-control" required ></select>
+							</div>
+						</div>
+
+						<br>
+
+						<div class="col-md-12">
+							<!-- state -->
+							<div class="form-group col-md-6">
+								<label class="control-label" for="state_0">State</label> 
+								<select id="state_${count }" name="state" class="form-control" required></select>
+							</div>
+
+							<div class="form-group col-md-6">
+								<label class="control-label" for="postal_code_0">PostalCode</label>
+								<input type="text" name="postal_code" id="postal_code_${count }"
+									class="form-control" required
+									value = <c:out value="${address.getPostalCode() }" />
+									>
+							</div>
+						</div>
+						<br>
+
+						<!-- remove item  -->
+						<div class="col-md-12">
+							<a href="javascript:void(0)" id="remove_0"
+								class="remove-item btn btn-danger">Remove</a>
+						</div>
+						<br>
+					</div>
+				</div>
+   				
+   			   								  
+				</c:if>
+				
 				<div class="col-md-4">
 					<a id="add-more" class="btn btn-info" href="javascript:;">Add
 						Another Address</a>
 				</div>
 				<div class="col-md-4">
-					<input type="submit" class="btn btn-success" value="Register">
+					<input type="submit" class="btn btn-success" 
+					value= "<c:if test="${empty userData}">Register </c:if>
+						<c:if test="${not empty userData}">Save Edits </c:if>
+					" >
 				</div>
 			</form>
+			
+			<c:if test="${empty userData}">
 			<div class="col-md-4">
 				<a href="login.jsp" class="btn btn-primary">Goto Login Page</a>
 			</div>
+			</c:if>
 		</div>
 	</section>
 

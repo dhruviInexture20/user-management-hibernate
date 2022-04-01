@@ -3,6 +3,9 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
+	<welcome-file-list>
+		<welcome-file>login.jsp</welcome-file>
+	</welcome-file-list>
   <display-name>Archetype Created Web Application</display-name>
   <servlet>
   	<servlet-name>LoginServlet</servlet-name>
@@ -34,6 +37,18 @@
   	<description></description>
   	<servlet-class>controller.ForgetPasswordServlet</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>GetAllUsers</servlet-name>
+  	<display-name>GetAllUsers</display-name>
+  	<description></description>
+  	<servlet-class>controller.GetAllUsers</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>EditProfileServlet</servlet-name>
+  	<display-name>EditProfileServlet</display-name>
+  	<description></description>
+  	<servlet-class>controller.EditProfileServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>LoginServlet</servlet-name>
   	<url-pattern>/LoginServlet</url-pattern>
@@ -53,5 +68,13 @@
   <servlet-mapping>
   	<servlet-name>ForgetPasswordServlet</servlet-name>
   	<url-pattern>/ForgetPasswordServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>GetAllUsers</servlet-name>
+  	<url-pattern>/GetAllUsers</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>EditProfileServlet</servlet-name>
+  	<url-pattern>/EditProfileServlet</url-pattern>
   </servlet-mapping>
 </web-app>

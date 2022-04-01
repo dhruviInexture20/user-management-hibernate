@@ -4,13 +4,19 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
+import service.AdminServiceImpl;
+
 
 public class DBConnection {
 	private static DBConnection conn = null;
-	static final String loadDriver = "com.mysql.cj.jdbc.Driver";
+	static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 	static final String URL = "jdbc:mysql://localhost/user_management";
-	static final String username = "root";
-	static final String password = "admin";
+	static final String USERNAME = "root";
+	static final String PASSWORD = "admin";
+	private static final Logger logger = LogManager.getLogger(DBConnection.class);
 	
 	private DBConnection() {
 		
@@ -25,20 +31,16 @@ public class DBConnection {
 	
 	public Connection getConnection() {
 		Connection conn = null;
-//		String loadDriver = "com.mysql.cj.jdbc.Driver";
-//		String URL = "jdbc:mysql://localhost/user_management";
-//		String username = "root";
-//		String password = "admin";
 		
 		try {
-			Class.forName(loadDriver);
-			conn = DriverManager.getConnection(URL, username, password);
+			Class.forName(DRIVER);
+			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			}
 		catch(SQLException e){
-			e.printStackTrace();
+			logger.error(e);
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 		return conn;
 	}
@@ -47,14 +49,8 @@ public class DBConnection {
 		try {
 			conn.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 		
 	}
-	
-	public static void getPreparedStmt(String query) {
-		
-	}
-	
-	
 }

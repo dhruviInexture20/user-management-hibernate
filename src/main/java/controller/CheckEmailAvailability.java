@@ -26,9 +26,11 @@ public class CheckEmailAvailability extends HttpServlet {
 		String email = request.getParameter("email");
 		
 		UserDaoImpl userDao = new UserDaoImpl();
-		if(!userDao.checkEmailAvailability( email)) {
+		if(userDao.isEmailAvailable( email)) {
+			// email already exist
 			out.print("false");
 		}else {
+			// email not exist
 			out.print("true");
 		}
 	}

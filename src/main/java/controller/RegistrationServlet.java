@@ -3,7 +3,6 @@ package controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -19,22 +18,23 @@ import org.apache.log4j.Logger;
 
 import bean.AddressBean;
 import bean.UserBean;
-import dao.UserDao;
-import dao.UserDaoImpl;
+import service.UserServiceImpl;
 import utility.ServletUtility;
+
 
 
 @MultipartConfig
 public class RegistrationServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
 	private static final Logger logger = LogManager.getLogger(RegistrationServlet.class);
-	private UserDaoImpl userDao = new UserDaoImpl();
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		BasicConfigurator.configure();
 		logger.info("in logger");
 		
+		// getting user information from registration page
 		String fname = request.getParameter("firstname");
 		String lname = request.getParameter("lastname");
 		String email = request.getParameter("email");
@@ -45,15 +45,18 @@ public class RegistrationServlet extends HttpServlet {
 		String birthdate = request.getParameter("birthdate");
 		String gender = request.getParameter("gender");
 		InputStream inputStream = null;
+		
 		Part filepart = request.getPart("profilepic");
 		inputStream = filepart.getInputStream();
 		
+		// getting all address field values
 		String[] address = request.getParameterValues("address");
 		String[] city = request.getParameterValues("city");
 		String[] country = request.getParameterValues("country");
 		String[] state = request.getParameterValues("state");
 		String[] postalcode = request.getParameterValues("postal_code");
 		
+		// setting information to userBean
 		UserBean user = new UserBean();
 		user.setFname(fname);
 		user.setLname(lname);
@@ -65,6 +68,7 @@ public class RegistrationServlet extends HttpServlet {
 		user.setDob(birthdate);
 		user.setProfilepic(inputStream);
 		
+		// setting address list to user object
 		List<AddressBean> addressList = new ArrayList<>();
 		for(int i = 0; i < city.length; i++) {
 			AddressBean userAddress = new AddressBean();
@@ -77,20 +81,32 @@ public class RegistrationServlet extends HttpServlet {
 		}
 		user.setAddressList(addressList);
 		
-		UserDaoImpl userDao = new UserDaoImpl();
-		int i = userDao.addUser(user);
+		// perform validation
+		UserServiceImpl userService = new UserServiceImpl();
+		List<String> msg = userService.validateUser(user, confirm_password);
 		
-		if(i > 0) {
-			ServletUtility.setSuccessMessage("User registered sucessfully", request);
-			logger.info("User added successfully");
+		if(msg.isEmpty()) {
+			// no error
+			int i = userService.saveUser(user);
+			
+			// successfully added
+			if(i > 0) {
+				request.setAttribute("success", "User registered sucessfully");
+				logger.info("User added successfully");
+			}
+			// user not added
+			else {
+				request.setAttribute("error", "User not inserted");
+				logger.error("User not inserted");
+			}
+			//request.getRequestDispatcher("registration.jsp").forward(request, response);
+			
 		}
 		else {
-			ServletUtility.setErrorMessage("User not insterted", request, response);
-			logger.error("User not inserted");
+			// errors 
+			request.setAttribute("errorMsg", msg);
 		}
-		
 		request.getRequestDispatcher("registration.jsp").forward(request, response);
-		
 	}
 
 }

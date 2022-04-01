@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.BasicConfigurator;
@@ -29,6 +30,9 @@ public class UserDaoImpl implements UserDao {
 	
 	static final String userIdQuery = "select max(userid) from userdata";
 	static final String emailAvailability = "select email from userdata where email=?";
+	static final String userByEmailQuery = "Select * from userdata where email=?";
+	static final String allUsersQuery = "select * from userdata where role='user'";
+	
 	@Override
 	public int addUser(UserBean user) {
 		int i = 0;
@@ -93,9 +97,8 @@ public class UserDaoImpl implements UserDao {
 	    UserBean user = null;
 	    try {
 	      conn = DBConnection.getInstance().getConnection();
-	      PreparedStatement stmt = conn.prepareStatement("Select * from userdata where email=?");
+	      PreparedStatement stmt = conn.prepareStatement(userByEmailQuery);
 	      stmt.setString(1,email);
-//	      stmt.setString(2,password);
 	      ResultSet rs = stmt.executeQuery();
 	      if(rs.next()) {
 	        user = new UserBean();
@@ -115,10 +118,19 @@ public class UserDaoImpl implements UserDao {
 	        
 	        PasswordSecurity ps = new PasswordSecurity();
 	        
+	        logger.info("password = " + encPass);
 	        user.setPassword( ps.decrypt(encPass) );
-//	        user.setPassword(rs.getString("password"));
+	        logger.info("password after = " + user.getPassword());
 	        
 	        // TODO get all addresses of user
+	        
+	        AddressDao addressDao = new AddressDaoImpl();
+	        List<AddressBean> userAddressList = new ArrayList<>();
+	        
+	        userAddressList = addressDao.getAddress(rs.getInt("userid"));
+	        
+	        user.setAddressList(userAddressList);
+	        
 	      }
 	      
 	    } catch (Exception e) {
@@ -128,11 +140,14 @@ public class UserDaoImpl implements UserDao {
 	    return user;
 	  }
 
+	
+	// return true if email is available in database 
+	// return false if email is not available
 	@Override
-	public boolean checkEmailAvailability(String email) {
+	public boolean isEmailAvailable(String email) {
 		Connection conn;
 		ResultSet rs = null;
-		boolean isAvailable = true;
+		boolean isAvailable = false;
 		BasicConfigurator.configure();
 		conn = DBConnection.getInstance().getConnection();
 		try {
@@ -141,7 +156,7 @@ public class UserDaoImpl implements UserDao {
 			rs = stmt.executeQuery();
 			
 			if(rs.next()) {
-				isAvailable = false;
+				isAvailable = true;
 			}
 			
 		} catch (SQLException e) {
@@ -149,6 +164,25 @@ public class UserDaoImpl implements UserDao {
 		}
 		return isAvailable;
 		
+	}
+	
+	@Override
+	public ResultSet getListOfUsers() {
+		ResultSet rs = null;
+		BasicConfigurator.configure();
+		
+		Connection conn = DBConnection.getInstance().getConnection();
+		
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(allUsersQuery);
+		} catch (SQLException e) {
+			logger.error(e);
+		}
+		
+		return rs;
+	
 	}
 
 

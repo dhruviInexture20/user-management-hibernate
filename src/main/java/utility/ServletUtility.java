@@ -8,11 +8,11 @@ public class ServletUtility {
 	static String Error = "Invalid data";
 	static String SuccessMessage = "Done";
 
-	public static void setErrorMessage(String msg, HttpServletRequest request, HttpServletResponse response) {
+	public static void setErrorMessage(String msg, HttpServletRequest request) {
 		request.setAttribute(Error, msg);
 	}
 
-	public static String getErrorMessage(HttpServletRequest request, HttpServletResponse response) {
+	public static String getErrorMessage(HttpServletRequest request) {
 		String val = (String) request.getAttribute(Error);
 		if (val == null) {
 			return "";

@@ -17,14 +17,22 @@
 
 <body>
 
-	<jsp:useBean id="userData" class="bean.UserBean" scope="session"/>
- 
+	<!--<jsp:useBean id="userData" class="bean.UserBean" scope="session"/>
+	
+	<c:if test="${sessionScope.userData}!=null">
+ 	HelloUser 
+ 	 <p>${userData.fname } </p>
+ 	</c:if>
+	-->
+ 	
 	<section>
 		<div class="main container">
 			<h1 class="text-center">User Registration</h1>
-			<div class="col-md-12">
-				<c:out value="<%=ServletUtility.getSuccessMessage(request)%>" />
-				<c:out value="<%=ServletUtility.getErrorMessage(request, response)%>" />
+			<div class="col-md-12" class="msg">
+				<c:out value= "${ errorMsg }" />				
+				<c:out value= "${ requestScope.success }" />
+				<c:out value= "${ requestScope.error }" />
+				
 			</div>
 			<form id="registration_form" action="RegistrationServlet"
 				method="post" enctype="multipart/form-data">
