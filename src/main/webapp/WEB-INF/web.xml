@@ -49,6 +49,30 @@
   	<description></description>
   	<servlet-class>controller.EditProfileServlet</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>GetUserAddressServlet</servlet-name>
+  	<display-name>GetUserAddressServlet</display-name>
+  	<description></description>
+  	<servlet-class>controller.GetUserAddressServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>EditUserDataServlet</servlet-name>
+  	<display-name>EditUserDataServlet</display-name>
+  	<description></description>
+  	<servlet-class>controller.EditUserDataServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>DeleteUserServlet</servlet-name>
+  	<display-name>DeleteUserServlet</display-name>
+  	<description></description>
+  	<servlet-class>controller.DeleteUserServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>EditUserByAdminServlet</servlet-name>
+  	<display-name>EditUserByAdminServlet</display-name>
+  	<description></description>
+  	<servlet-class>controller.EditUserByAdminServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>LoginServlet</servlet-name>
   	<url-pattern>/LoginServlet</url-pattern>
@@ -76,5 +100,21 @@
   <servlet-mapping>
   	<servlet-name>EditProfileServlet</servlet-name>
   	<url-pattern>/EditProfileServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>GetUserAddressServlet</servlet-name>
+  	<url-pattern>/GetUserAddressServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>EditUserDataServlet</servlet-name>
+  	<url-pattern>/EditUserDataServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>DeleteUserServlet</servlet-name>
+  	<url-pattern>/DeleteUserServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>EditUserByAdminServlet</servlet-name>
+  	<url-pattern>/EditUserByAdminServlet</url-pattern>
   </servlet-mapping>
 </web-app>

@@ -20,29 +20,23 @@
  	
 	<section>
 		<div class="main container">
-		
-	 <c:forEach items="${userData.getAddressList() }" var="address">
-        <tr>
-            <td><c:out value="${address.getState()}"/></td>
-            <td> <c:out value="${address.getCity()}"/></td>  
-        </tr>
-    </c:forEach>
-		
-		
-		
+			
 			<h1 class="text-center">User Registration</h1>
 			<div class="col-md-12" class="msg">
 				<c:out value= "${ errorMsg }" />				
 				<c:out value= "${ requestScope.success }" />
-				<c:out value= "${ requestScope.error }" />
-				
-				
+				<c:out value= "${ requestScope.error }" />	
 			</div>
 			<form id="registration_form" 
-				action= "<c:if test="${empty userData}">RegistrationServlet </c:if>
-						<c:if test="${not empty userData}">EditProfileServlet</c:if>" 
-				method="post" enctype="multipart/form-data">
+				  action= " <c:if test='${empty userData}'>RegistrationServlet </c:if>
+						<c:if test='${not empty userData}'>EditProfileServlet</c:if>" 
+				  method="post" enctype="multipart/form-data">
+				
 				<div class="col-md-12">
+					
+					<!-- userid -->
+					<input type="hidden" id="userid" value="${userData.getUserid() }">			
+				
 				
 					<!-- first Name -->
 					<div class="form-group col-md-6">
@@ -124,10 +118,11 @@
 							<option value="project-manager" ${userData.getDesignation() == "project-manager" ? 'selected="selected"' : ''}>Project Manager</option>
 						</select>
 					</div>
+					
 					<div class="col-md-6">
 						<label for="birthdate">Birthday:</label> 
 						<input type="date"
-							value = <c:out value='${userData.getDob() }'/>
+							value = "<c:out value="${userData.dob }"/>"
 							id="datepicker" name="birthdate" class="form-control" >
 					</div>
 				</div>
@@ -157,87 +152,22 @@
 							accept=".jpg, .jpeg, .png">
 					</div>	
 					<div class="holder col-md-12">
-						<img id="imgPreview" src="#" alt="profile pic">
+						<img id="imgPreview" src="data:image/jpg;base64,${userData.base64Image}" alt="profile pic">
 					</div>
 				</div>
 				
 				
-				<c:set var="count" value="0" scope="page" />
-				<c:forEach items="${userData.getAddressList() }" var="address">
+			
 				
-				<!-- Address  -->
-				<div id="main-container">
-					<div class="container-item col-md-12">
-						<!-- street address -->
-						<div class="form-group col-md-12">
-							<label class="control-label" for="address_0">Street
-								Address</label> <input class="form-control" type="text" id="address_${count }"
-								name="address" required 
-								value = <c:out value="${address.getStreetAddress() }" />
-								>
-						</div>
-						<br>
-
-						<!-- city -->
-						<div class="col-md-12">
-							<div class="form-group col-md-6">
-								<label class="control-label" for="city_0">City</label> <input
-									class="form-control" type="text" id="city_${count }" name="city"
-									required
-									value = <c:out value="${address.getCity() }" />
-									>
-							</div>
-							
-							
-							<!-- country -->
-							<div class="form-group col-md-6">
-								<label class="control-label" for="country_0">Country</label> 
-								<select id="country_${count }" name="country" class="form-control" required ></select>
-							</div>
-						</div>
-
-						<br>
-
-						<div class="col-md-12">
-							<!-- state -->
-							<div class="form-group col-md-6">
-								<label class="control-label" for="state_0">State</label> 
-								<select id="state_${count }" name="state" class="form-control" required  ></select>
-							</div>
-
-							<div class="form-group col-md-6">
-								<label class="control-label" for="postal_code_0">PostalCode</label>
-								<input type="text" name="postal_code" id="postal_code_${count }"
-									class="form-control" required
-									value = <c:out value="${address.getPostalCode() }" />
-									>
-							</div>
-						</div>
-						<br>
-
-						<!-- remove item  -->
-						<div class="col-md-12">
-							<a href="javascript:void(0)" id="remove_0"
-								class="remove-item btn btn-danger">Remove</a>
-						</div>
-						<br>
-					</div>
-				</div>
-				 <c:set var="count" value="${count + 1 }" scope="page" /> 
-				</c:forEach>
-				
-				<c:if test="${empty userData}">  
-   				
-   				
    				<div id="main-container">
+
 					<div class="container-item col-md-12">
+						<input type="hidden" value="" id="addressID_0" name="addressid">
+					
 						<!-- street address -->
 						<div class="form-group col-md-12">
-							<label class="control-label" for="address_0">Street
-								Address</label> <input class="form-control" type="text" id="address_${count }"
-								name="address" required 
-								value = <c:out value="${address.getStreetAddress() }" />
-								>
+							<label class="control-label" for="address_0">Street Address</label> 
+							<input class="form-control" type="text" id="streetAddress_0" name="address" required >
 						</div>
 						<br>
 
@@ -245,15 +175,13 @@
 						<div class="col-md-12">
 							<div class="form-group col-md-6">
 								<label class="control-label" for="city_0">City</label> <input
-									class="form-control" type="text" id="city_${count }" name="city"
-									required
-									value = <c:out value="${address.getCity() }" />
-									>
+									class="form-control" type="text" id="city_0" name="city"
+									required >
 							</div>
 							<!-- country -->
 							<div class="form-group col-md-6">
 								<label class="control-label" for="country_0">Country</label> 
-								<select id="country_${count }" name="country" class="form-control" required ></select>
+								<select id="country_0" name="country" class="form-control" required ></select>
 							</div>
 						</div>
 
@@ -263,15 +191,13 @@
 							<!-- state -->
 							<div class="form-group col-md-6">
 								<label class="control-label" for="state_0">State</label> 
-								<select id="state_${count }" name="state" class="form-control" required></select>
+								<select id="state_0" name="state" class="form-control" required></select>
 							</div>
 
 							<div class="form-group col-md-6">
 								<label class="control-label" for="postal_code_0">PostalCode</label>
-								<input type="text" name="postal_code" id="postal_code_${count }"
-									class="form-control" required
-									value = <c:out value="${address.getPostalCode() }" />
-									>
+								<input type="text" name="postal_code" id="postal_code_0"
+									class="form-control" required >
 							</div>
 						</div>
 						<br>
@@ -284,9 +210,6 @@
 						<br>
 					</div>
 				</div>
-   				
-   			   								  
-				</c:if>
 				
 				<div class="col-md-4">
 					<a id="add-more" class="btn btn-info" href="javascript:;">Add
@@ -305,6 +228,15 @@
 				<a href="login.jsp" class="btn btn-primary">Goto Login Page</a>
 			</div>
 			</c:if>
+			
+			<c:if test="${not empty userData}">
+			<div class="col-md-4">
+				<a href="LogOutServlet" class="btn btn-primary">LogOut</a>
+			</div>
+			</c:if>
+			
+			
+			
 		</div>
 	</section>
 
@@ -314,13 +246,17 @@
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="assets/library/bootstrap/js/bootstrap.min.js"></script>
 	<script src="assets/library/clone-field-increment-id/cloneData.js"></script>
-	<script
-		src="assets/library/jquery-validation-1.19.3/dist/jquery.validate.js"></script>
+	<script src="assets/library/jquery-validation-1.19.3/dist/jquery.validate.js"></script>
 	<script src="assets/library/List_Country_State-master/countries.js"></script>
 	<script src="assets/library/datetimepicker/moment.min.js"></script>
-	<script
-		src="assets/library/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+	<script src="assets/library/datetimepicker/bootstrap-datetimepicker.min.js"></script>
 	<script src="assets/js/registration.js"></script>
+	
+	<c:if test="${not empty userData}">
+	<script src="assets/js/editProfile.js"></script>
+	</c:if>
+	
+	
 </body>
 
 </html>

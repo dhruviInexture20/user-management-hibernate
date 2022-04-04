@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -19,9 +20,13 @@ public class AddressDaoImpl implements AddressDao {
 	static final String addAddressQuery = "insert into user_address"
 			+ "(userid, street_address, city, state, postal_code, country)" + "values(?,?,?,?,?,?)";
 	static final String getUserAddressQ = "select * from user_address where userid=?";
+	static final String deleteAddressByIdQuery = "delete from user_address where addressid=?";
+	static final String updateAddressQuery = "update user_address set street_address=?, city=?, state=?, postal_code=?, country=? where addressid=?";
 	
 	@Override
-	public void addAddress(List<AddressBean> list, int userid) {
+	public void addAddressList(List<AddressBean> list, int userid) {
+		
+		BasicConfigurator.configure();
 		Connection conn = DBConnection.getInstance().getConnection();
 		PreparedStatement stmt = null;
 		int count = 0;
@@ -48,6 +53,8 @@ public class AddressDaoImpl implements AddressDao {
 
 	@Override
 	public List<AddressBean> getAddress(int userid) {
+		
+		BasicConfigurator.configure();
 		Connection conn = DBConnection.getInstance().getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -67,12 +74,12 @@ public class AddressDaoImpl implements AddressDao {
 				userAddress.setAddressid(rs.getInt("addressid"));
 				userAddress.setStreetAddress(rs.getString("street_address"));
 				userAddress.setState(rs.getString("state"));
+				userAddress.setCountry(rs.getString("country"));
 				userAddress.setCity(rs.getString("city"));
 				userAddress.setPostalCode(rs.getString("postal_code"));
 				
 				addressList.add(userAddress);
 			}
-			
 			return addressList;
 			
 		} catch (SQLException e) {
@@ -81,5 +88,75 @@ public class AddressDaoImpl implements AddressDao {
 		
 		
 		return null;
+	}
+
+	@Override
+	public void deleteAddressById(Integer addressid) {
+		
+		BasicConfigurator.configure();
+		Connection conn = DBConnection.getInstance().getConnection();
+		PreparedStatement stmt = null;
+		
+		try {
+			stmt = conn.prepareStatement(deleteAddressByIdQuery);
+			stmt.setInt(1, addressid);
+			stmt.executeUpdate();
+			logger.info("delete " + addressid);
+			
+		} catch (SQLException e) {
+			logger.info(e);
+		}
+		
+	}
+
+	@Override
+	public void addAddress(AddressBean address, int userid) {
+		BasicConfigurator.configure();
+		Connection conn = DBConnection.getInstance().getConnection();
+		PreparedStatement stmt = null;
+		
+		try {
+			stmt = conn.prepareStatement(addAddressQuery);
+			stmt.setInt(1, userid);
+			stmt.setString(2, address.getStreetAddress());
+			stmt.setString(3, address.getCity());
+			stmt.setString(4, address.getState());
+			stmt.setString(5, address.getPostalCode());
+			stmt.setString(6, address.getCountry());
+			stmt.execute();
+			logger.info("add address" + userid + "userid");
+			
+		} catch (SQLException e) {
+			logger.info(e);
+		}
+		
+	}
+
+	@Override
+	public void updateAddress(AddressBean address) {
+		
+		BasicConfigurator.configure();
+		Connection conn = DBConnection.getInstance().getConnection();
+		PreparedStatement stmt = null;
+		
+		try {
+			stmt = conn.prepareStatement(updateAddressQuery);
+			
+			stmt.setString(1, address.getStreetAddress());
+			stmt.setString(2, address.getCity());
+			stmt.setString(3, address.getState());
+			stmt.setString(4, address.getPostalCode());
+			stmt.setString(5, address.getCountry());
+			stmt.setInt(6, address.getAddressid());
+			stmt.executeUpdate();
+			logger.info("user address updated");
+			
+			
+			
+		} catch (SQLException e) {
+			logger.info(e);
+		}
+		
+		
 	}
 }

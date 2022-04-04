@@ -1,6 +1,11 @@
 package bean;
 
+import java.beans.Transient;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 
 import utility.PasswordSecurity;
@@ -19,7 +24,21 @@ public class UserBean {
 	private InputStream profilepic;
 	private List<AddressBean> addressList;
 	private String role;
+	private String base64Image;
+	private byte[] image;
+
+	public byte[] getImage() {
+		return this.image;
+	}
 	
+	
+	public String getBase64Image() {
+		return base64Image;
+	}
+	
+	public void setBase64Image(String base64Image) {
+		this.base64Image = base64Image;
+	}
 	
 	public int getUserid() {
 		return userid;
@@ -102,7 +121,7 @@ public class UserBean {
 	// return password in encrypted form
 	public String getProtectedPassword() throws Exception {
 		PasswordSecurity ps = new PasswordSecurity();
-		return ps.decrypt(this.password);
+		return ps.encrypt(this.password);
 	}
 	
 	// convert encrypted password to normal form and set password
@@ -111,5 +130,10 @@ public class UserBean {
 		setPassword(ps.decrypt(encPass));
 	}
 	
-	
+//	public Date getDobObj() throws ParseException {
+////		String sDate1="31/12/1998";  
+//	    Date date1=new SimpleDateFormat("yyyy-mm-dd").parse(dob);  
+//	    System.out.println(date1 + "parse");
+//	    return date1;
+//	}
 }

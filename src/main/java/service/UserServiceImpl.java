@@ -1,5 +1,6 @@
 package service;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,10 @@ import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import bean.AddressBean;
 import bean.UserBean;
+import dao.AddressDao;
+import dao.AddressDaoImpl;
 import dao.UserDao;
 import dao.UserDaoImpl;
 import utility.DataUtility;
@@ -49,7 +53,6 @@ public class UserServiceImpl implements UserService {
 			msg.add("Invalid Password");
 			logger.error("invalid password" + user.getPassword());
 		}
-		
 		
 		if(!confirmPass.equals(user.getPassword())) {
 			msg.add("password doesn't match");
@@ -93,6 +96,86 @@ public class UserServiceImpl implements UserService {
 				user = null;
 			}
 		}
+		return user;
+	}
+
+	@Override
+	public List<AddressBean> getUserAddress(int userid){
+
+		AddressDao addressDao = new AddressDaoImpl();
+		List<AddressBean> addressList = addressDao.getAddress(userid);
+		
+		return addressList;
+	}
+
+	@Override
+	public void updateUserData(UserBean user, List<AddressBean> oldAddressList) {
+		
+		BasicConfigurator.configure();
+		
+		UserDao userDao = new UserDaoImpl();
+		AddressDao addressDao = new AddressDaoImpl();
+		
+		List<AddressBean> newAddressList = user.getAddressList();
+		
+		// update user data
+		userDao.updateUser(user);
+		
+		
+		// array of old user address id 
+		List<Integer> oldAddressidList = new ArrayList<>();
+		for( int i = 0; i < oldAddressList.size(); i++) {
+			oldAddressidList.add(oldAddressList.get(i).getAddressid());
+		}
+		logger.info(oldAddressidList + "old addressid");
+		
+		AddressBean address = new AddressBean();
+		
+		for (int i = 0; i < newAddressList.size(); i++) {    
+			address = newAddressList.get(i);
+			logger.info(address.getAddressid());
+			if(address.getAddressid() == 0) {
+				// add
+				logger.info("add" + i);
+				
+				addressDao.addAddress(address, user.getUserid());
+				
+			}
+			else if(oldAddressidList.contains(address.getAddressid())){
+				// update
+				logger.info("update" + i);
+				oldAddressidList.remove(oldAddressidList.indexOf(address.getAddressid()));
+				addressDao.updateAddress(address);
+			}
+		}
+		
+		for(int i = 0; i < oldAddressidList.size(); i++) {
+			// delete
+			
+			addressDao.deleteAddressById(oldAddressidList.get(i));
+		}
+		
+		logger.info(oldAddressidList + " to delete");
+	}
+
+	
+	@Override
+	public void deleteUser(String userid) {
+		
+		UserDao userDao = new UserDaoImpl();
+		
+		userDao.deleteUser(userid);
+		
+	}
+
+	@Override
+	public UserBean getUserForEdit(int userid) {
+		
+		UserDao userDao = new UserDaoImpl();
+		UserBean user =userDao.getUserByUserID(userid);
+		
+		 
+		
 		return user;
 	}
 }

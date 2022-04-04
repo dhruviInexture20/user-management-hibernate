@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,8 +100,6 @@ public class RegistrationServlet extends HttpServlet {
 				request.setAttribute("error", "User not inserted");
 				logger.error("User not inserted");
 			}
-			//request.getRequestDispatcher("registration.jsp").forward(request, response);
-			
 		}
 		else {
 			// errors 

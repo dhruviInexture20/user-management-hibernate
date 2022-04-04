@@ -14,13 +14,13 @@ public class DataUtility {
 		  }
 	 
 	 public static boolean isPassword(String val) {
-		    String passregex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\\\S+$).{8,20}$";
-//		    if (val.matches(passregex)) {
-//		      return true;
-//		    } else {
-//		      return false;
-//		    }
-		    return true;
+		    //String passregex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\\\S+$).{8,20}$";
+		    String passregex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$";
+		    if (val.matches(passregex)) {
+		      return true;
+		    } else {
+		      return false;
+		    }
 		  }
 	 
 	 public static boolean isPhoneNo(String val) {

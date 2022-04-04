@@ -25,8 +25,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="profile-img">
-                            <img src=<c:out value='${userData.getProfilepic() }'/> alt=""/>
-
+                            <img src="data:image/jpg;base64,${userData.base64Image}" alt=""/>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -53,7 +52,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-4 text-center">
                     	<a href="LogOutServlet" class="btn btn-primary">Logout</a>
                     </div>
                     <div class="col-md-8 col-md-offset-4">
@@ -62,7 +61,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <label>User Id</label>
-                                            </div>
+                                            </div>\
                                             <div class="col-md-6">
                                                 <p><c:out value='${userData.getUserid() }'/></p>
                                             </div>

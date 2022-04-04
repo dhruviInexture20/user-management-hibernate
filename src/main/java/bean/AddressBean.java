@@ -6,7 +6,7 @@ public class AddressBean {
 	private int userid;
 	private String streetAddress;
 	private String city;
-	private String Country;
+	private String country;
 	private String state;
 	private String postalCode;
 	
@@ -35,10 +35,10 @@ public class AddressBean {
 		this.city = city;
 	}
 	public String getCountry() {
-		return Country;
+		return country;
 	}
 	public void setCountry(String country) {
-		Country = country;
+		this.country = country;
 	}
 	public String getState() {
 		return state;

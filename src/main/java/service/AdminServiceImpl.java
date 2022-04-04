@@ -43,6 +43,7 @@ public class AdminServiceImpl implements AdminService {
 //	        PasswordSecurity ps = new PasswordSecurity();
 	        
 //	        user.setPassword( ps.decrypt(encPass) );
+	        
 	        list.add(user);
 			
 		}

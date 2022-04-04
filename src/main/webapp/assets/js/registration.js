@@ -6,11 +6,11 @@ $(document).ready(function() {
 	populateCountries("country_0", "state_0");
 
 	//var date = new Date().toISOString().slice(0, 10);
-	//$("#datepicker").datetimepicker({
-		//format: 'yyyy-mm-dd'
+	// $("#datepicker").datetimepicker({
+		// format: 'yyyy-mm-dd'
 		//endDate : new Date() ,
 		//maxDate: date,
-	//});
+	// });
 	
 //	$("#email").blur(function(){
 //		console.log("emaillll");	
@@ -58,7 +58,8 @@ $(document).ready(function() {
 	});
 
 	$.validator.addMethod("passwordFormatCheck", function(value, element) {
-		return this.optional(element) || /^(?=.*\d)(?=.*[A-Z])(?=.*\W).*$/i.test(value);
+		//return this.optional(element) || /^(?=.*\d)(?=.*[A-Z])(?=.*\W).*$/i.test(value);
+		return this.optional(element) || /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/i.test(value);
 	}, 'Password must contain one capital letter,one numerical and one special character');
 
 	$("#registration_form").validate({
@@ -68,12 +69,10 @@ $(document).ready(function() {
 
 			password: {
 				required: true,
-				// minlength: 5
 				passwordFormatCheck: true,
 			},
 			confirm_password: {
 				required: true,
-				// minlength: 5,
 				equalTo: "#password"
 			},
 			email: {
@@ -117,4 +116,6 @@ $(document).ready(function() {
 			},
 		}
 	});
+	
+	
 });
