@@ -43,8 +43,9 @@ public class LoginServlet extends HttpServlet {
 		// login as user
 		else if(user != null && user.getRole().equals("user")) {
 			HttpSession session = request.getSession();
-			session.setAttribute("userData", user);
-			response.sendRedirect("welcome.jsp");
+			//session.setAttribute("userData", user);
+			request.setAttribute("userData", user);
+			request.getRequestDispatcher("welcome.jsp").forward(request, response);
 		}
 		// invalid data
 		else {

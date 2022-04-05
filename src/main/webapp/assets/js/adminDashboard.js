@@ -26,7 +26,8 @@ $(document).ready(function () {
 				{ "data": 'dob' },
 				{ "data": 'designation' },
 				{ "defaultContent": "<button class='btn btn-primary editUser' >Edit</button> " },
-				{ "defaultContent": "<button class='btn btn-danger deleteUser'>Delete</button> " }
+				{ "defaultContent": "<button class='btn btn-danger deleteUser'>Delete</button> " },
+				{ "defaultContent": "<a href='EditUserByAdminServlet?userid="+activeUserid+"' class='btn btn-primary edituser'>Edit User</a>"},
 			],
 		});
 
@@ -35,6 +36,7 @@ $(document).ready(function () {
 	    var row_data = table.row(this).data(); // get the row data
 		activeUserid = row_data["userid"];
 		console.log(activeUserid);
+		$("#hidden_userid").val(activeUserid);
 
 	});
 
@@ -61,17 +63,21 @@ $(document).ready(function () {
 
 	$("#myTable ").on("click", ".editUser", function () {
 		console.log("edit");
-		
-		$.ajax({
-			url: "EditUserByAdminServlet",
-			type: "post",
-			data:{
-				userid: activeUserid
-			}
-	
-		});
+		$("#submit").click();
 
-		
+
+		// $.ajax({
+		// 	url: "EditUserByAdminServlet",
+		// 	type: "post",
+		// 	data:{
+		// 		userid: activeUserid
+		// 	},
+		// 	success: function(){
+		// 		console.log("go to registration page");
+
+		// 	}
+	
+		// });
 	});
 
 });

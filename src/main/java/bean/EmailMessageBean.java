@@ -1,6 +1,6 @@
-package utility;
+package bean;
 
-public class EmailMessage {
+public class EmailMessageBean {
 
   private String to = null;
   private String from = null;

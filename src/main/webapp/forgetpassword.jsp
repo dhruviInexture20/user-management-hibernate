@@ -10,7 +10,6 @@
 <link href="assets/css/forgetpassword.css" rel="stylesheet" >
 <script src="assets/library/jquery/jquery-3.6.0.min.js"></script>
 <script src="assets/library/bootstrap/js/bootstrap.min.js"></script>
-
 </head>
 <body>
 
@@ -25,12 +24,34 @@
                   <p>You can reset your password here.</p>
                   <div class="panel-body">
     
-                    <form action="ForgetPasswordServlet" id="register-form" role="form" autocomplete="off" class="form" method="post">
+                    <form action="ForgetPasswordServlet" id="forgetpassword_form" role="form" autocomplete="off" class="form" method="post">
     
                       <div class="form-group">
                         <div class="input-group">
                           <span class="input-group-addon"><i class="glyphicon glyphicon-envelope color-blue"></i></span>
+                         
                           <input id="email" name="email" placeholder="email address" class="form-control"  type="email">
+                        
+                        </div>
+                      </div>
+                      <div class="form-group">
+                      <div class="input-group">
+                      <span class="input-group-addon"><i class="glyphicon glyphicon-lock color-blue"></i></span>
+                      
+                      	<select class="form-control" name="security_question">
+							<option value="">Select Security Question</option>
+							<option value="book">What is your favourite book name ?</option>
+							<option value="nick_name" >What is your nick name ?</option>
+							<option value="game" >What is the name of your favouroite game ?</option>
+						</select>
+						
+						</div>
+                      </div>
+                      
+                      <div class="form-group">
+                        <div class="input-group">
+                          <span class="input-group-addon"><i class="glyphicon glyphicon-hand-right color-blue"></i></span>
+                          <input id="security_answer" name="security_answer" placeholder="security answer" class="form-control" type="text">
                         </div>
                       </div>
                       <div class="form-group">
@@ -47,6 +68,10 @@
 	</div>
 </div>
 
+
+	<script src="assets/library/jquery-validation-1.19.3/dist/jquery.validate.js"></script>
+	
+	<script src="assets/js/forgetpassword.js"></script>
 
 </body>
 </html>

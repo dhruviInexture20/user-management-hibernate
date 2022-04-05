@@ -18,10 +18,13 @@
 </head>
 <body>
 
- <jsp:useBean id="userData" class="bean.UserBean" scope="session"/>
+<!--<jsp:useBean id="userData" class="bean.UserBean" scope="request"/>-->
+ 
+<c:set var="userData" value="${requestScope.userData }" scope="request" />
  
 <div class="container emp-profile">
-            <form method="post">
+	        
+            <!-- <form method="post">  -->
                 <div class="row">
                     <div class="col-md-4">
                         <div class="profile-img">
@@ -48,7 +51,13 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <a href="registration.jsp" class="profile-edit-btn"  >Edit Profile </a>
+                        <!-- <a href="registration.jsp" class="profile-edit-btn"  >Edit Profile </a> -->
+                        <form action="EditUserByAdminServlet" method="post">
+                        	<input type="hidden" value="${userData.userid }" id="hidden_userid" name="userid">
+            				<input type="submit" class="btn btn-primary" value="Edit Profile" id="submit">
+                        
+                        </form>
+                        
                     </div>
                 </div>
                 <div class="row">
@@ -61,7 +70,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <label>User Id</label>
-                                            </div>\
+                                            </div>
                                             <div class="col-md-6">
                                                 <p><c:out value='${userData.getUserid() }'/></p>
                                             </div>
@@ -167,7 +176,7 @@
                    
                     </div>
                 </div>
-            </form>           
+          <!--   </form>        -->    
         </div>
 
 

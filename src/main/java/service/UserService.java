@@ -21,5 +21,9 @@ public interface UserService {
 
 	UserBean getUserForEdit(int parseInt);
 
+	String authUserForgetPass(String email, String security_question, String security_answer);
+
+	void sendOTPMail(String email);
+
 	
 }

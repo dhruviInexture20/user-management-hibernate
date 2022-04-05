@@ -1,11 +1,6 @@
 package bean;
 
-import java.beans.Transient;
 import java.io.InputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Base64;
-import java.util.Date;
 import java.util.List;
 
 import utility.PasswordSecurity;
@@ -23,14 +18,16 @@ public class UserBean {
 	private String gender;
 	private InputStream profilepic;
 	private List<AddressBean> addressList;
+	private String s_question;
+	private String s_answer;
 	private String role;
 	private String base64Image;
-	private byte[] image;
+	//private byte[] image;
 
-	public byte[] getImage() {
-		return this.image;
-	}
-	
+//	public byte[] getImage() {
+//		return this.image;
+//	}
+//	
 	
 	public String getBase64Image() {
 		return base64Image;
@@ -128,6 +125,22 @@ public class UserBean {
 	public void setPasswordString(String encPass) throws Exception {
 		PasswordSecurity ps = new PasswordSecurity();
 		setPassword(ps.decrypt(encPass));
+	}
+
+	public String getS_question() {
+		return s_question;
+	}
+
+	public void setS_question(String s_question) {
+		this.s_question = s_question;
+	}
+
+	public String getS_answer() {
+		return s_answer;
+	}
+
+	public void setS_answer(String s_answer) {
+		this.s_answer = s_answer;
 	}
 	
 //	public Date getDobObj() throws ParseException {

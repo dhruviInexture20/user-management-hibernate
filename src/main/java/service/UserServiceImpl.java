@@ -4,17 +4,21 @@ package service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.AuthenticationException;
+
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import bean.AddressBean;
+import bean.EmailMessageBean;
 import bean.UserBean;
 import dao.AddressDao;
 import dao.AddressDaoImpl;
 import dao.UserDao;
 import dao.UserDaoImpl;
 import utility.DataUtility;
+import utility.EmailUtility;
 
 public class UserServiceImpl implements UserService {
 	
@@ -121,7 +125,6 @@ public class UserServiceImpl implements UserService {
 		// update user data
 		userDao.updateUser(user);
 		
-		
 		// array of old user address id 
 		List<Integer> oldAddressidList = new ArrayList<>();
 		for( int i = 0; i < oldAddressList.size(); i++) {
@@ -163,7 +166,6 @@ public class UserServiceImpl implements UserService {
 	public void deleteUser(String userid) {
 		
 		UserDao userDao = new UserDaoImpl();
-		
 		userDao.deleteUser(userid);
 		
 	}
@@ -172,10 +174,48 @@ public class UserServiceImpl implements UserService {
 	public UserBean getUserForEdit(int userid) {
 		
 		UserDao userDao = new UserDaoImpl();
-		UserBean user =userDao.getUserByUserID(userid);
-		
-		 
+		UserBean user = userDao.getUserByUserID(userid);
 		
 		return user;
+	}
+
+	@Override
+	public String authUserForgetPass(String email, String security_question, String security_answer) {
+		
+		UserDao userDao = new UserDaoImpl();
+		String msg = null;
+		if(!userDao.isEmailAvailable(email)) {
+			msg = "Email is not registered";
+		}
+		else if(!userDao.checkSecurityQnA(email, security_question, security_answer)){
+			msg = "Wrong security question or answer";
+		}
+		
+	return msg;
+		
+		
+	}
+
+	@Override
+	public void sendOTPMail(String email) {
+		
+		String otp = DataUtility.generateOTP();
+		logger.info("generated otp = " + otp);
+		
+		EmailMessageBean emailbean = new EmailMessageBean();
+		
+		emailbean.setTo(email);
+		
+		emailbean.setMessage("Your One Time Password is " + otp);
+		
+		try {
+			EmailUtility emailUtility = new EmailUtility();
+			emailUtility.sendMail(emailbean);
+		} catch (AuthenticationException e) {
+			logger.error(e);
+			
+		}
+		
+//
 	}
 }

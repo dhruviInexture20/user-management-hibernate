@@ -45,6 +45,12 @@ public class RegistrationServlet extends HttpServlet {
 		String designation = request.getParameter("designation");
 		String birthdate = request.getParameter("birthdate");
 		String gender = request.getParameter("gender");
+		String s_question = request.getParameter("security_question");
+		String s_answer = request.getParameter("security_answer");
+		
+		logger.info(s_answer + "answer");
+		logger.info(s_question + " question");
+		
 		InputStream inputStream = null;
 		
 		Part filepart = request.getPart("profilepic");
@@ -68,6 +74,9 @@ public class RegistrationServlet extends HttpServlet {
 		user.setPassword(password);
 		user.setDob(birthdate);
 		user.setProfilepic(inputStream);
+		user.setS_question(s_question);
+		user.setS_answer(s_answer);
+		
 		
 		// setting address list to user object
 		List<AddressBean> addressList = new ArrayList<>();

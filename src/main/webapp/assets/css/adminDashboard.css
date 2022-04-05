@@ -11,3 +11,7 @@ body {
 	padding: 50px;
 	background-color: white;
 }
+
+#submit {
+	display:none;
+}

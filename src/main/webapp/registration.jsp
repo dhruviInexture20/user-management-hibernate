@@ -19,6 +19,8 @@
 <body>
  	
 	<section>
+		
+	
 		<div class="main container">
 			
 			<h1 class="text-center">User Registration</h1>
@@ -31,6 +33,9 @@
 				  action= " <c:if test='${empty userData}'>RegistrationServlet </c:if>
 						<c:if test='${not empty userData}'>EditProfileServlet</c:if>" 
 				  method="post" enctype="multipart/form-data">
+				
+					<c:set var="userData" value="${userData }" scope="session"/>
+				
 				
 				<div class="col-md-12">
 					
@@ -108,8 +113,8 @@
 				<div class="col-md-12">
 					<!-- designation -->
 					<div class="form-group col-md-6">
-						<label for="role_title">User Designation</label> <select
-							class="form-control" name="designation" required>
+						<label for="role_title">User Designation</label> 
+						<select class="form-control" name="designation" required>
 							<option value="">Select designation</option>
 							<option value="intern" ${userData.getDesignation() == "intern" ? 'selected="selected"' : ''}>Intern</option>
 							<option value="jrDeveloper" ${userData.getDesignation() == "jrDeveloper" ? 'selected="selected"' : ''}>Junior Developer</option>
@@ -156,6 +161,23 @@
 					</div>
 				</div>
 				
+				<div class="col-md-12">
+					<div class="form-group col-md-6">
+					<label for="role_title">Security Question : </label>
+						<select class="form-control" name="security_question">
+							<option value="">Select Security Question</option>
+							<option value="book" ${userData.s_question == "book" ? 'selected="selected"' : ''} >What is your favourite book name ?</option>
+							<option value="nick_name" ${userData.s_question == "nick_name" ? 'selected="selected"' : ''} >What is your nick name ?</option>
+							<option value="game" ${userData.s_question == "game" ? 'selected="selected"' : ''} >What is the name of your favouroite game ?</option>
+						</select>
+					</div>
+					
+					<div class="form-group col-md-6">
+					<label for="role_title">Enter Your Answer :</label>
+						<input class="form-control" type="text" name="security_answer" placeholder="Enter Answer" value="${userData.s_answer }">
+					</div>
+				
+				</div>
 				
 			
 				

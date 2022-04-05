@@ -16,7 +16,7 @@
 <body>
 	
 	<div id="wrapper" class="container">
-		
+		<a href="LogOutServlet" class="btn btn-primary">Log Out</a> 
         <h2 class="text-center">User Detail</h2>
         <table id="myTable" class="table table-striped table-bordered" style="width:100%">
             <thead>
@@ -31,9 +31,15 @@
                     <th>Designation</th>
                     <th></th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
         </table>
+		
+        <form action="EditUserByAdminServlet" method="post" id="redirect_form">
+            <input type="hidden" value="" id="hidden_userid" name="userid">
+            <input type="submit" value="submit" id="submit">
+        </form>
     </div>
 
 	<script src="assets/library/jquery/jquery-3.6.0.min.js"></script>

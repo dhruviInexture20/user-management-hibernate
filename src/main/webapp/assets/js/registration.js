@@ -62,11 +62,20 @@ $(document).ready(function() {
 		return this.optional(element) || /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/i.test(value);
 	}, 'Password must contain one capital letter,one numerical and one special character');
 
+	$.validator.addMethod("lettersonly", function(value, element) {
+		return this.optional(element) || /^[a-z\s]+$/i.test(value);
+	 });
+
 	$("#registration_form").validate({
 		rules: {
-			firstname: "required",
-			lastname: "required",
-
+			firstname: {
+				required: true,
+				lettersonly: true
+			},
+			lastname: {
+				required: true,
+				lettersonly: true
+			},
 			password: {
 				required: true,
 				passwordFormatCheck: true,
@@ -95,13 +104,25 @@ $(document).ready(function() {
 			postal_code: {
 				required: true,
 				number: true,
+			},
+			security_question: {
+				required: true,
+			},
+			security_answer: {
+				required: true
 			}
 			// gender: "required",
 
 		},
 		messages: {
-			firstname: "Please enter your firstname",
-			lastname: "Please enter your lastname",
+			firstname: {
+				required: "Please enter your firstname",
+				lettersonly: "Please enter valid firstname",
+			},
+			lastname:{
+				required: "Please enter your lastname",
+				lettersonly: "Please enter valid lastname",
+			} ,
 			password: {
 				required: "Please provide a password",
 			},
@@ -114,6 +135,12 @@ $(document).ready(function() {
 				email: "Please enter a valid email address",
 				remote: "The corresponding email already exists"
 			},
+			security_question:{
+				required: "Please select any security question"
+			},
+			security_answer:{
+				required: "Please enter security answer",
+			}
 		}
 	});
 	

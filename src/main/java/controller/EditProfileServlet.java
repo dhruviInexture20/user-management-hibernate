@@ -35,17 +35,12 @@ public class EditProfileServlet extends HttpServlet {
 		
 		BasicConfigurator.configure();
 		
-//		String fname = request.getParameter("firstname");
-//		String lname = request.getParameter("lastname");
-//		String password = request.getParameter("password");
-//		String phone = request.getParameter("phone");
-//		String designation = request.getParameter("designation");
-//		String birthdate = request.getParameter("birthdate");
-	
-		
 		HttpSession session = request.getSession(false);
 		UserBean user = (UserBean)session.getAttribute("userData");
+		//UserBean user = (UserBean)request.getAttribute("userData");
+		session.setAttribute("userData",null);
 		
+		logger.info(user == null);
 		
 		user.setFname(request.getParameter("firstname"));
 		user.setLname(request.getParameter("lastname"));
@@ -62,11 +57,6 @@ public class EditProfileServlet extends HttpServlet {
 		String[] country = request.getParameterValues("country");
 		String[] state = request.getParameterValues("state");
 		String[] postalcode = request.getParameterValues("postal_code");
-		
-		logger.info("city = " + Arrays.toString(city));
-		logger.info("state = " + Arrays.toString(state));
-		
-		
 		
 		List<AddressBean> oldAddressList = user.getAddressList();
 		
@@ -101,6 +91,7 @@ public class EditProfileServlet extends HttpServlet {
 		logger.info("in edit servlet");
 		
 		request.setAttribute("success" , "user successfully updated");
+		request.setAttribute("userData", user);
 		request.getRequestDispatcher("registration.jsp").forward(request, response);
 		
 		

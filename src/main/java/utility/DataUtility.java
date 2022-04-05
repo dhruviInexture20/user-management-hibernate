@@ -1,5 +1,6 @@
 package utility;
 
+import java.util.Random;
 
 public class DataUtility {
 
@@ -51,6 +52,12 @@ public class DataUtility {
 		    } else {
 		      return false;
 		    }
-		  }
+	 }
+	 
+	 public static String generateOTP() {
+		 Random random = new Random();
+		 int otp = random.nextInt(999999);
+		 return String.format("%6d",otp);
+	 }
 	 
 }

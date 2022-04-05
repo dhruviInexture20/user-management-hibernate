@@ -24,6 +24,7 @@ public class DeleteUserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = LogManager.getLogger(DeleteUserServlet.class);
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */

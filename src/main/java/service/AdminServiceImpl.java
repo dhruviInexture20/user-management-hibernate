@@ -36,14 +36,10 @@ public class AdminServiceImpl implements AdminService {
 	        user.setPhone(rs.getString("phone"));
 	        user.setDob(rs.getString("dob"));
 	        user.setRole(rs.getString("role"));
-	        
-	        
-//	        String encPass = rs.getString("password");
-	        
-//	        PasswordSecurity ps = new PasswordSecurity();
-	        
-//	        user.setPassword( ps.decrypt(encPass) );
-	        
+	        user.setS_question(rs.getString("question"));
+	        user.setS_answer(rs.getString("answer"));
+	        user.setPasswordString(rs.getString("password"));
+	     
 	        list.add(user);
 			
 		}

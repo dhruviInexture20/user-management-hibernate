@@ -13,5 +13,6 @@ public interface UserDao {
 	public void updateUser(UserBean user);
 	public void deleteUser(String userid);
 	public UserBean getUserByUserID(int userid);
+	public boolean checkSecurityQnA(String email, String security_question, String security_answer);
 	
 }

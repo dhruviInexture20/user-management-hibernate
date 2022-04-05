@@ -30,15 +30,19 @@ public class UserDaoImpl implements UserDao {
 	private static final Logger logger = LogManager.getLogger(UserDaoImpl.class);
 	
 	static final String addQuery = "insert into userdata"
-			+ "(fname, lname, gender, designation, email, phone, password, dob, profilepic) "
-			+ "values(?,?,?,?,?,?,?,?,?)";
+			+ "(fname, lname, gender, designation, email, phone, password, dob, profilepic, question, answer) "
+			+ "values(?,?,?,?,?,?,?,?,?,?,?)";
 	
 	static final String userIdQuery = "select max(userid) from userdata";
 	static final String emailAvailability = "select email from userdata where email=?";
-	static final String userByEmailQuery = "Select * from userdata where email=?";
+	static final String userByEmailQuery = "select * from userdata where email=?";
 	static final String allUsersQuery = "select * from userdata where role='user'";
 	static final String updateUserQuery = "update userdata set fname=?, lname=?, password=?, phone=?, designation=?, dob=? where email=?";
 	static final String deleteUserQuery = "delete from userdata where userid=?";
+	static final String getUserEmailByIDQuery = "select email from userdata where userid=?";
+	static final String authSecurityQnAQuery = "select question,answer from userdata where email=?";
+	
+	
 	
 	static String userid = "userid";
 	static String fname = "fname";
@@ -49,7 +53,8 @@ public class UserDaoImpl implements UserDao {
 	static String phone = "phone";
 	static String dob = "dob";
 	static String role = "role";
-	
+	static String question = "question";
+	static String answer = "answer";
 	
 	@Override
 	public int addUser(UserBean user) {
@@ -64,15 +69,18 @@ public class UserDaoImpl implements UserDao {
 			stmt.setString(4, user.getDesignation());
 			stmt.setString(5, user.getEmail());
 			stmt.setString(6, user.getPhone());
-			String password = user.getPassword();
-			PasswordSecurity ps = new PasswordSecurity();
 			
-			stmt.setString(7, ps.encrypt(password));
-//			stmt.setString(7, user.getPassword());
+//			String password = user.getPassword();
+//			PasswordSecurity ps = new PasswordSecurity();
+//			stmt.setString(7, ps.encrypt(password));
+			stmt.setString(7, user.getProtectedPassword());
 			stmt.setString(8, user.getDob());
 			
 			InputStream inputStream = user.getProfilepic();
 			stmt.setBlob(9, inputStream);
+			
+			stmt.setString(10, user.getS_question());
+			stmt.setString(11, user.getS_answer());
 			
 			i = stmt.executeUpdate();
 			AddressDaoImpl addressdao = new AddressDaoImpl();
@@ -126,22 +134,18 @@ public class UserDaoImpl implements UserDao {
 	        user.setGender(rs.getString(gender));
 	        user.setDesignation(rs.getString(designation));
 	        user.setEmail(rs.getString(email));
-	        user.setPhone(rs.getString(phone));
-	        
-	        Date date = new Date();  
-	        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
-	        String strDate = formatter.format(rs.getDate("dob"));
-	        user.setDob(strDate);
-	        //logger.info("date = " + strDate);
-	        
+	        user.setPhone(rs.getString(phone));	    
+	        user.setDob(rs.getString(dob));
 	        user.setRole(rs.getString(role));
+	        user.setS_question(rs.getString(question));
+	        user.setS_answer(rs.getString(answer));
 	        
 	        Blob blob = rs.getBlob("profilepic");
 	        InputStream inputStream = blob.getBinaryStream();
 	        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 	        byte[] buffer = new byte[4096];
 	        int bytesRead = -1;
-  
+ 
 	        while((bytesRead = inputStream.read(buffer))!= -1) {
 	        	outputStream.write(buffer, 0, bytesRead);
 	        }
@@ -150,9 +154,11 @@ public class UserDaoImpl implements UserDao {
 	        user.setBase64Image(base64Image);
 //	        user.setProfilepic(rs.getBinaryStream("profilepic"));
 	        
-	        String encPass = rs.getString("password");
-	        PasswordSecurity ps = new PasswordSecurity();
-	        user.setPassword( ps.decrypt(encPass) );
+//	        String encPass = rs.getString("password");
+//	        PasswordSecurity ps = new PasswordSecurity();
+//	        user.setPassword( ps.decrypt(encPass) );
+	        
+	        user.setPasswordString(rs.getString("password"));
 	        
 	        // TODO get all addresses of user
 	        
@@ -272,6 +278,69 @@ public class UserDaoImpl implements UserDao {
 		
 		BasicConfigurator.configure();
 		Connection conn = DBConnection.getInstance().getConnection();
+		PreparedStatement stmt;
+		ResultSet rs = null;
+		UserBean user = new UserBean();
+		String userEmail = null;
+		
+		try {
+			stmt = conn.prepareStatement(getUserEmailByIDQuery);
+			stmt.setInt(1, userid);
+			rs = stmt.executeQuery();
+			logger.info("rs = " + rs);
+			if(rs.next()) {
+				userEmail = rs.getString(email);
+				
+			}
+			user = userLogin(userEmail);
+			
+			
+		} catch (SQLException e) {
+			logger.error(e);
+		}
+		return user;
+		
+		
+		
+	}
+
+	@Override
+	public boolean checkSecurityQnA(String userEmail, String security_question, String security_answer) {
+		
+		BasicConfigurator.configure();
+		Connection conn = DBConnection.getInstance().getConnection();
+		PreparedStatement stmt;
+		ResultSet rs = null;
+		String queFromDB = null;
+		String ansFromDB = null;
+		
+		try {
+			stmt = conn.prepareStatement(authSecurityQnAQuery);
+			stmt.setString(1, userEmail);
+			
+			rs = stmt.executeQuery();
+			if(rs.next()) {
+			queFromDB = rs.getString("question");
+			ansFromDB = rs.getString("answer");
+			
+			}
+			
+			if(security_question.equals(queFromDB) && security_answer.equals(ansFromDB)) {
+				return true;
+			}
+			else {
+				return false;
+			}
+			
+			
+			
+		} catch (SQLException e) {
+			logger.error(e);
+		}
+		
+		
+		
+		return false;
 	}
 
 
