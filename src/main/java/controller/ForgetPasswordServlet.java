@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.LogManager;
@@ -41,15 +42,20 @@ public class ForgetPasswordServlet extends HttpServlet {
 			logger.info("authenticated user");
 			
 			// send mail with otp
-			userService.sendOTPMail(email);
+			String otp =  userService.sendOTPMail(email);
 			
-			// redirect to enter otp page
+			userService.saveOTP(email, otp);
+			
+			request.setAttribute("email", email);
+//			response.sendRedirect("enterOtp.jsp");
+			request.getRequestDispatcher("enterOtp.jsp").forward(request, response);
 		}
 		else {
 			logger.info("wrong user");
 			logger.info(msg);
+			request.setAttribute("msg", msg);
+			request.getRequestDispatcher("forgetpassword.jsp").forward(request, response);
 			
-			// display error msg
 		}
 		
 		
@@ -70,7 +76,7 @@ public class ForgetPasswordServlet extends HttpServlet {
 //			
 //		} catch (Exception e) {
 //			// TODO Auto-generated catch block
-//			ServletUtility.setErrorMessage("Somting Wrong", request);
+//			
 //		}
 //		// forward
 //		request.getRequestDispatcher("login.jsp").forward(request, response);

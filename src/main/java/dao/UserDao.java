@@ -14,5 +14,8 @@ public interface UserDao {
 	public void deleteUser(String userid);
 	public UserBean getUserByUserID(int userid);
 	public boolean checkSecurityQnA(String email, String security_question, String security_answer);
+	public void resetPass(String email, String newPassword);
+	public void storeOtp(String email, String otp);
+	public String getUserOTP(String email);
 	
 }

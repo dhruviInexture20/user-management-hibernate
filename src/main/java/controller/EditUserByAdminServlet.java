@@ -42,4 +42,11 @@ public class EditUserByAdminServlet extends HttpServlet {
 		
 	}
 
+
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		resp.sendRedirect("login.jsp");
+	}
+
 }

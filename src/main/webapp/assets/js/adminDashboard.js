@@ -27,7 +27,6 @@ $(document).ready(function () {
 				{ "data": 'designation' },
 				{ "defaultContent": "<button class='btn btn-primary editUser' >Edit</button> " },
 				{ "defaultContent": "<button class='btn btn-danger deleteUser'>Delete</button> " },
-				{ "defaultContent": "<a href='EditUserByAdminServlet?userid="+activeUserid+"' class='btn btn-primary edituser'>Edit User</a>"},
 			],
 		});
 
@@ -50,11 +49,12 @@ $(document).ready(function () {
 				userid: activeUserid
 			},
 			success: function () {
-				alert("successs");
+				alert("user deleted successfully");
+				location.reload();
 
 			},
 			error: function () {
-				alert("fail");
+				alert("Error while deleting user");
 			}
 	
 		});

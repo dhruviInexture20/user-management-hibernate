@@ -7,6 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
+import com.mysql.cj.log.Log;
+
 import bean.UserBean;
 import dao.UserDao;
 import dao.UserDaoImpl;
@@ -19,39 +24,44 @@ import utility.ServletUtility;
  */
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	private static final Logger logger = LogManager.getLogger(LoginServlet.class);
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		UserBean user = new UserBean();
+//		UserBean user = new UserBean();
 		
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		
 		UserService userService = new UserServiceImpl();
-		user = userService.getUser(email, password);
+		UserBean user = userService.getUser(email, password);
+		
+		logger.info("null user =" + (user == null));
+		//logger.info("user email =" + user.getEmail());
+		
+		
+		if(user == null) {
+			request.setAttribute("error", "Invalid User");
+			request.getRequestDispatcher("login.jsp").forward(request, response);
+		}
 		
 		// login as admin
-		if(user != null && user.getRole().equals("admin")) {
+		else if(user != null && user.getRole().equals("admin")) {
 			HttpSession session = request.getSession();
-			session.setAttribute("adminData", user);
+			session.setAttribute("role", "admin");
 			response.sendRedirect("adminDashboard.jsp");
 		}
 		
 		// login as user
 		else if(user != null && user.getRole().equals("user")) {
 			HttpSession session = request.getSession();
-			//session.setAttribute("userData", user);
-			request.setAttribute("userData", user);
-			request.getRequestDispatcher("welcome.jsp").forward(request, response);
-		}
-		// invalid data
-		else {
-			//ServletUtility.setErrorMessage("Invalid User", request);
-			request.setAttribute("error", "Invalid User");
-			request.getRequestDispatcher("login.jsp").forward(request, response);
+			session.setAttribute("role", "user");
+			session.setAttribute("userData", user);
+//			request.getRequestDispatcher("welcome.jsp").forward(request, response);
+			response.sendRedirect("welcome.jsp");
 		}
 	}
 }

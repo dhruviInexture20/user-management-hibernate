@@ -19,6 +19,8 @@ import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import com.mysql.cj.xdevapi.Result;
+
 import bean.AddressBean;
 import bean.UserBean;
 import controller.RegistrationServlet;
@@ -37,12 +39,13 @@ public class UserDaoImpl implements UserDao {
 	static final String emailAvailability = "select email from userdata where email=?";
 	static final String userByEmailQuery = "select * from userdata where email=?";
 	static final String allUsersQuery = "select * from userdata where role='user'";
-	static final String updateUserQuery = "update userdata set fname=?, lname=?, password=?, phone=?, designation=?, dob=? where email=?";
+	static final String updateUserQuery = "update userdata set fname=?, lname=?, password=?, phone=?, designation=?, dob=?, question=?, answer=? where email=?";
 	static final String deleteUserQuery = "delete from userdata where userid=?";
 	static final String getUserEmailByIDQuery = "select email from userdata where userid=?";
 	static final String authSecurityQnAQuery = "select question,answer from userdata where email=?";
-	
-	
+	static final String resetPasswordQuery = "update userdata set password=? where email=?";
+	static final String storeOTPQuery = "update userdata set otp=? where email=?";
+	static final String getOTPQuery = "select otp from userdata where email=?";
 	
 	static String userid = "userid";
 	static String fname = "fname";
@@ -69,10 +72,6 @@ public class UserDaoImpl implements UserDao {
 			stmt.setString(4, user.getDesignation());
 			stmt.setString(5, user.getEmail());
 			stmt.setString(6, user.getPhone());
-			
-//			String password = user.getPassword();
-//			PasswordSecurity ps = new PasswordSecurity();
-//			stmt.setString(7, ps.encrypt(password));
 			stmt.setString(7, user.getProtectedPassword());
 			stmt.setString(8, user.getDob());
 			
@@ -120,14 +119,14 @@ public class UserDaoImpl implements UserDao {
 	public UserBean userLogin(String userEmail) {
 		BasicConfigurator.configure();
 	    Connection conn;
-	    UserBean user = null;
+	    UserBean user = new UserBean();
 	    try {
 	      conn = DBConnection.getInstance().getConnection();
 	      PreparedStatement stmt = conn.prepareStatement(userByEmailQuery);
 	      stmt.setString(1, userEmail);
 	      ResultSet rs = stmt.executeQuery();
 	      if(rs.next()) {
-	        user = new UserBean();
+//	        user = new UserBean();
 	        user.setUserid(rs.getInt(userid));
 	        user.setFname(rs.getString(fname));
 	        user.setLname(rs.getString(lname));
@@ -152,12 +151,7 @@ public class UserDaoImpl implements UserDao {
 	        byte[] imageBytes = outputStream.toByteArray();
 	        String base64Image = Base64.getEncoder().encodeToString(imageBytes);
 	        user.setBase64Image(base64Image);
-//	        user.setProfilepic(rs.getBinaryStream("profilepic"));
-	        
-//	        String encPass = rs.getString("password");
-//	        PasswordSecurity ps = new PasswordSecurity();
-//	        user.setPassword( ps.decrypt(encPass) );
-	        
+	      
 	        user.setPasswordString(rs.getString("password"));
 	        
 	        // TODO get all addresses of user
@@ -241,7 +235,9 @@ public class UserDaoImpl implements UserDao {
 			stmt.setString(4, user.getPhone());
 			stmt.setString(5, user.getDesignation());
 			stmt.setString(6, user.getDob());
-			stmt.setString(7, user.getEmail());
+			stmt.setString(7, user.getS_question());
+			stmt.setString(8, user.getS_answer());
+			stmt.setString(9, user.getEmail());
 			
 			stmt.executeUpdate();
 			logger.info("user data updated");
@@ -251,8 +247,6 @@ public class UserDaoImpl implements UserDao {
 		} catch (Exception e) {
 			logger.error(e);
 		}
-		
-		
 	}
 
 	@Override
@@ -331,8 +325,28 @@ public class UserDaoImpl implements UserDao {
 			else {
 				return false;
 			}
+					
+		} catch (SQLException e) {
+			logger.error(e);
+		}
+		return false;
+	}
+
+	@Override
+	public void resetPass(String email, String newPassword) {
+		BasicConfigurator.configure();
+		Connection conn = DBConnection.getInstance().getConnection();
+		PreparedStatement stmt;
+		
+		try {
+			stmt = conn.prepareStatement(resetPasswordQuery);
+			stmt.setString(1, newPassword);
+			stmt.setString(2, email);
 			
+			logger.info(stmt);
 			
+			int i = stmt.executeUpdate();
+			logger.info("Password reset successfully" + i);
 			
 		} catch (SQLException e) {
 			logger.error(e);
@@ -340,7 +354,49 @@ public class UserDaoImpl implements UserDao {
 		
 		
 		
-		return false;
+	}
+
+	@Override
+	public void storeOtp(String email, String otp) {
+		BasicConfigurator.configure();
+		Connection conn = DBConnection.getInstance().getConnection();
+		PreparedStatement stmt;
+		
+		try {
+			stmt = conn.prepareStatement(storeOTPQuery);
+			stmt.setString(1, otp);
+			stmt.setString(2, email);
+			stmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			logger.error(e);
+		}
+	}
+
+	@Override
+	public String getUserOTP(String email) {
+		BasicConfigurator.configure();
+		Connection conn = DBConnection.getInstance().getConnection();
+		PreparedStatement stmt;
+		String otp = null;
+		
+		try {
+			stmt = conn.prepareStatement(getOTPQuery);
+			stmt.setString(1, email);
+			
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next()) {
+				logger.info(rs.getString("otp"));
+				otp = rs.getString("otp");
+				
+			}
+			
+		} catch (SQLException e) {
+			logger.error(e);
+		}
+		return otp;
+		
+		
 	}
 
 

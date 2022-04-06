@@ -15,12 +15,11 @@
 
 </head>
 
-
 <body>
  	
 	<section>
+	 	
 		
-	
 		<div class="main container">
 			
 			<h1 class="text-center">User Registration</h1>
@@ -34,8 +33,7 @@
 						<c:if test='${not empty userData}'>EditProfileServlet</c:if>" 
 				  method="post" enctype="multipart/form-data">
 				
-					<c:set var="userData" value="${userData }" scope="session"/>
-				
+					
 				
 				<div class="col-md-12">
 					
@@ -262,7 +260,8 @@
 		</div>
 	</section>
 
-
+	
+	
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="assets/library/jquery/jquery-3.6.0.min.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->

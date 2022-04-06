@@ -13,15 +13,17 @@
 
 <link href="assets/css/welcome.css" rel="stylesheet" >
 <script src="assets/library/jquery/jquery-3.6.0.min.js"></script>
-<script src="assets/library/bootstrap/js/bootstrap.min.js"></script>
-
+<script src="assets/library/bootstrap/js/bootstrap.min.js"></script>	
 </head>
+
 <body>
 
 <!--<jsp:useBean id="userData" class="bean.UserBean" scope="request"/>-->
  
-<c:set var="userData" value="${requestScope.userData }" scope="request" />
- 
+<c:set var="userData" value="${sessionScope.userData }" scope="request" />
+
+<jsp:include page="header.jsp"></jsp:include> 
+
 <div class="container emp-profile">
 	        
             <!-- <form method="post">  -->
@@ -30,6 +32,7 @@
                         <div class="profile-img">
                             <img src="data:image/jpg;base64,${userData.base64Image}" alt=""/>
                         </div>
+        
                     </div>
                     <div class="col-md-6">
                         <div class="profile-head">
@@ -52,19 +55,23 @@
                     </div>
                     <div class="col-md-2">
                         <!-- <a href="registration.jsp" class="profile-edit-btn"  >Edit Profile </a> -->
-                        <form action="EditUserByAdminServlet" method="post">
-                        	<input type="hidden" value="${userData.userid }" id="hidden_userid" name="userid">
-            				<input type="submit" class="btn btn-primary" value="Edit Profile" id="submit">
                         
-                        </form>
-                        
+                        <a href="LogOutServlet" class="btn btn-primary text-center">Logout</a>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4 text-center">
-                    	<a href="LogOutServlet" class="btn btn-primary">Logout</a>
+                    <div class="row">
+                    	<form action="EditUserByAdminServlet" method="post">
+                        	<input type="hidden" value="${userData.userid }" id="hidden_userid" name="userid">
+            				<input type="submit" class="btn btn-primary" value="Edit Profile" id="submit">
+                        
+                        </form>
+                    	
+                    </div>            
+               
                     </div>
-                    <div class="col-md-8 col-md-offset-4">
+                    <div class="col-md-8">
                         <div class="tab-content profile-tab" id="myTabContent">
                             <div class="tab-pane fade show active in" id="home" role="tabpanel" aria-labelledby="home-tab">
                                         <div class="row">
@@ -178,7 +185,6 @@
                 </div>
           <!--   </form>        -->    
         </div>
-
 
 
 

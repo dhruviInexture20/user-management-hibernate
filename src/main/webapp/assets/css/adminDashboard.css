@@ -2,7 +2,9 @@
 
 body {
 	background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+	height : 100%;
 }
+
 
 #wrapper {
 	margin: 10px auto;
@@ -15,3 +17,12 @@ body {
 #submit {
 	display:none;
 }
+
+/*
+.footer-wrapper {
+	
+	bottom: 0;
+	
+}
+
+*/

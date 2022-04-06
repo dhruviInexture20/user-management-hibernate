@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+    pageEncoding="ISO-8859-1" isELIgnored="false"%>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,6 +18,13 @@
 </head>
 <body>
 	
+	<c:set var="role" value="${role }" />
+	<c:if test="${role != 'admin'}">
+		<c:redirect url="login.jsp"></c:redirect>
+	</c:if>
+	
+	<jsp:include page="header.jsp"></jsp:include>
+    <div class="body-wrapper">
 	<div id="wrapper" class="container">
 		<a href="LogOutServlet" class="btn btn-primary">Log Out</a> 
         <h2 class="text-center">User Detail</h2>
@@ -31,7 +41,6 @@
                     <th>Designation</th>
                     <th></th>
                     <th></th>
-                    <th></th>
                 </tr>
             </thead>
         </table>
@@ -40,6 +49,7 @@
             <input type="hidden" value="" id="hidden_userid" name="userid">
             <input type="submit" value="submit" id="submit">
         </form>
+    </div>
     </div>
 
 	<script src="assets/library/jquery/jquery-3.6.0.min.js"></script>

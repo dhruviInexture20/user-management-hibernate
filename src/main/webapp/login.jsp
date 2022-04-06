@@ -21,12 +21,13 @@
 </head>
 
 <body>
+    <jsp:include page="header.jsp"></jsp:include>
     
     <div class="wrapper">
         <h1 class="text-center">User Login</h1>
         <div class="col-md-12">
         		<c:out value= "${ requestScope.error }" />
-        		
+        		<c:out value="${ requestScope.success }" />
         </div>
         <form action="LoginServlet" method="post" id="login_form">
             <div class="form-group">
@@ -45,6 +46,9 @@
         </div>
     </div>
     
+    
+    <jsp:include page="footer.jsp"></jsp:include>
+     
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="assets/library/jquery/jquery-3.6.0.min.js"></script>
     <script src="assets/library/bootstrap/js/bootstrap.min.js"></script>

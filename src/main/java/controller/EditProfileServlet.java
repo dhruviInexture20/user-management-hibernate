@@ -48,10 +48,10 @@ public class EditProfileServlet extends HttpServlet {
 		user.setPhone(request.getParameter("phone"));
 		user.setDesignation(request.getParameter("designation"));
 		user.setDob(request.getParameter("birthdate"));
+		user.setS_question(request.getParameter("security_question"));
+		user.setS_answer(request.getParameter("security_answer"));
 		
 		String[] addressid = request.getParameterValues("addressid");
-		logger.info("addressid = " + Arrays.toString(addressid));
-		
 		String[] address = request.getParameterValues("address");
 		String[] city = request.getParameterValues("city");
 		String[] country = request.getParameterValues("country");

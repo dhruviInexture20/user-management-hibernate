@@ -3,8 +3,11 @@ package service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.naming.AuthenticationException;
+import javax.xml.crypto.Data;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.LogManager;
@@ -19,6 +22,7 @@ import dao.UserDao;
 import dao.UserDaoImpl;
 import utility.DataUtility;
 import utility.EmailUtility;
+import utility.PasswordSecurity;
 
 public class UserServiceImpl implements UserService {
 	
@@ -71,6 +75,12 @@ public class UserServiceImpl implements UserService {
 			msg.add("Please Select your Birthdate");
 			logger.error("enter your birthdate");
 		}
+		if(DataUtility.isNull(user.getDesignation())) {
+			msg.add("Please Select designation");
+		}
+		if(DataUtility.isPhoneNo(user.getPhone())) {
+			msg.add("invalid phone number");
+		}
 		
 		return msg;
 	}
@@ -89,18 +99,15 @@ public class UserServiceImpl implements UserService {
 		
 		UserDao userDao = new UserDaoImpl();
 		UserBean user = new UserBean();
-		// get true is email exist
 		
-		if(userDao.isEmailAvailable(email)) {
-			// user exist
-			// getting user details
-			user = userDao.userLogin(email);
-			logger.info("password = " + user.getPassword());
-			if(!password.equals(user.getPassword())) {
-				user = null;
-			}
+		user = userDao.userLogin(email);
+		if(user == null || user.getUserid() == 0) {
+			return null;
 		}
-		return user;
+		else if(user.getPassword().equals(password)) {
+			return user;
+		}
+		return null;
 	}
 
 	@Override
@@ -124,41 +131,27 @@ public class UserServiceImpl implements UserService {
 		
 		// update user data
 		userDao.updateUser(user);
+	
+		List<Integer> oldAddressidList = oldAddressList.stream().map( oldAddress -> oldAddress.getAddressid()).collect(Collectors.toList());
 		
-		// array of old user address id 
-		List<Integer> oldAddressidList = new ArrayList<>();
-		for( int i = 0; i < oldAddressList.size(); i++) {
-			oldAddressidList.add(oldAddressList.get(i).getAddressid());
-		}
-		logger.info(oldAddressidList + "old addressid");
-		
-		AddressBean address = new AddressBean();
-		
-		for (int i = 0; i < newAddressList.size(); i++) {    
-			address = newAddressList.get(i);
-			logger.info(address.getAddressid());
+		newAddressList.stream().forEach(address -> {
+			
 			if(address.getAddressid() == 0) {
-				// add
-				logger.info("add" + i);
 				
+				// add address
 				addressDao.addAddress(address, user.getUserid());
-				
+				logger.info("add" + address.getAddressid());
 			}
-			else if(oldAddressidList.contains(address.getAddressid())){
-				// update
-				logger.info("update" + i);
+			else if(oldAddressidList.contains(address.getAddressid())) {
+				// update address
 				oldAddressidList.remove(oldAddressidList.indexOf(address.getAddressid()));
 				addressDao.updateAddress(address);
+				logger.info("update" + address.getAddressid());
 			}
-		}
+		});  
 		
-		for(int i = 0; i < oldAddressidList.size(); i++) {
-			// delete
-			
-			addressDao.deleteAddressById(oldAddressidList.get(i));
-		}
-		
-		logger.info(oldAddressidList + " to delete");
+		// delete address
+		oldAddressidList.stream().forEach( addressid -> addressDao.deleteAddressById(addressid));
 	}
 
 	
@@ -197,7 +190,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void sendOTPMail(String email) {
+	public String sendOTPMail(String email) {
 		
 		String otp = DataUtility.generateOTP();
 		logger.info("generated otp = " + otp);
@@ -211,11 +204,56 @@ public class UserServiceImpl implements UserService {
 		try {
 			EmailUtility emailUtility = new EmailUtility();
 			emailUtility.sendMail(emailbean);
+			saveOTP(email, otp);
+			
 		} catch (AuthenticationException e) {
 			logger.error(e);
 			
 		}
+		return otp;
+	}
+
+	@Override
+	public void resetPassword(String email, String newPassword) {
 		
-//
+		UserDao userDao = new UserDaoImpl();
+		
+		PasswordSecurity secure;
+		try {
+			secure = new PasswordSecurity();
+			newPassword = secure.encrypt(newPassword);
+			
+		} catch (Exception e) {
+			logger.error(e);
+		}
+		
+		userDao.resetPass(email, newPassword);
+		
+		logger.info(email);
+		logger.info(newPassword);
+		
+	}
+
+	@Override
+	public void saveOTP(String email, String otp) {
+		
+		UserDao userDao = new UserDaoImpl();
+		userDao.storeOtp(email, otp);
+		
+	}
+
+	@Override
+	public int getOtpByEmail(String email) {
+		
+		UserDao userDao = new UserDaoImpl();
+		String otp = userDao.getUserOTP(email);
+		int otpInt;
+		if(otp == null) {
+			otpInt = 0;
+		}
+		else {
+			otpInt = Integer.parseInt(otp);
+		}
+		return otpInt;
 	}
 }

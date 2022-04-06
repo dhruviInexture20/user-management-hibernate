@@ -23,7 +23,13 @@ public interface UserService {
 
 	String authUserForgetPass(String email, String security_question, String security_answer);
 
-	void sendOTPMail(String email);
+	String sendOTPMail(String email);
+
+	void resetPassword(String email, String newPassword);
+
+	void saveOTP(String email, String otp);
+
+	int getOtpByEmail(String email);
 
 	
 }

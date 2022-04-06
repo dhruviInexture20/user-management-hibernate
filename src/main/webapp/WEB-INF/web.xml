@@ -7,6 +7,26 @@
 		<welcome-file>login.jsp</welcome-file>
 	</welcome-file-list>
   <display-name>Archetype Created Web Application</display-name>
+  <filter>
+  	<filter-name>UserAuthFilter</filter-name>
+  	<display-name>UserAuthFilter</display-name>
+  	<description></description>
+  	<filter-class>filter.UserAuthFilter</filter-class>
+  </filter>
+  <filter>
+  	<filter-name>NoCacheFilter</filter-name>
+  	<display-name>NoCacheFilter</display-name>
+  	<description></description>
+  	<filter-class>filter.NoCacheFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>UserAuthFilter</filter-name>
+  	<url-pattern>/welcome.jsp</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+  	<filter-name>NoCacheFilter</filter-name>
+  	<url-pattern>/*</url-pattern>
+  </filter-mapping>
   <servlet>
   	<servlet-name>LoginServlet</servlet-name>
   	<display-name>LoginServlet</display-name>
@@ -73,6 +93,18 @@
   	<description></description>
   	<servlet-class>controller.EditUserByAdminServlet</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>VerifyOTPServlet</servlet-name>
+  	<display-name>VerifyOTPServlet</display-name>
+  	<description></description>
+  	<servlet-class>controller.VerifyOTPServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>UpdatePasswordServlet</servlet-name>
+  	<display-name>UpdatePasswordServlet</display-name>
+  	<description></description>
+  	<servlet-class>controller.UpdatePasswordServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>LoginServlet</servlet-name>
   	<url-pattern>/LoginServlet</url-pattern>
@@ -116,5 +148,13 @@
   <servlet-mapping>
   	<servlet-name>EditUserByAdminServlet</servlet-name>
   	<url-pattern>/EditUserByAdminServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>VerifyOTPServlet</servlet-name>
+  	<url-pattern>/VerifyOTPServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>UpdatePasswordServlet</servlet-name>
+  	<url-pattern>/UpdatePasswordServlet</url-pattern>
   </servlet-mapping>
 </web-app>
