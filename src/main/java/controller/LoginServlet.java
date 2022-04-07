@@ -39,12 +39,11 @@ public class LoginServlet extends HttpServlet {
 		UserService userService = new UserServiceImpl();
 		UserBean user = userService.getUser(email, password);
 		
-		logger.info("null user =" + (user == null));
-		//logger.info("user email =" + user.getEmail());
-		
 		
 		if(user == null) {
 			request.setAttribute("error", "Invalid User");
+			request.setAttribute("loginEmail", email);
+			request.setAttribute("loginPass", password);
 			request.getRequestDispatcher("login.jsp").forward(request, response);
 		}
 		
@@ -60,7 +59,6 @@ public class LoginServlet extends HttpServlet {
 			HttpSession session = request.getSession();
 			session.setAttribute("role", "user");
 			session.setAttribute("userData", user);
-//			request.getRequestDispatcher("welcome.jsp").forward(request, response);
 			response.sendRedirect("welcome.jsp");
 		}
 	}

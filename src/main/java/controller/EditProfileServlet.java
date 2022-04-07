@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.LogManager;
@@ -36,9 +38,20 @@ public class EditProfileServlet extends HttpServlet {
 		BasicConfigurator.configure();
 		
 		HttpSession session = request.getSession(false);
-		UserBean user = (UserBean)session.getAttribute("userData");
-		//UserBean user = (UserBean)request.getAttribute("userData");
-		session.setAttribute("userData",null);
+		UserBean user = new UserBean();
+		
+		String role = (String) session.getAttribute("role");
+		logger.info("role = " + role);
+		
+//		if(role.equals("admin")) {
+//			user = (UserBean) request.getAttribute("userData");
+//			logger.info(user == null);
+//		}
+//		else if(role.equals("user")) {
+//			user = (UserBean) session.getAttribute("userData");
+//		}
+		
+		user = (UserBean) session.getAttribute("userData");
 		
 		logger.info(user == null);
 		
@@ -50,6 +63,16 @@ public class EditProfileServlet extends HttpServlet {
 		user.setDob(request.getParameter("birthdate"));
 		user.setS_question(request.getParameter("security_question"));
 		user.setS_answer(request.getParameter("security_answer"));
+		
+		InputStream inputStream = null;
+		Part filepart = request.getPart("profilepic");
+		inputStream = filepart.getInputStream();
+//		user.setProfilepic(inputStream);
+		logger.info("profile = " + (inputStream == null));
+//		
+		if(inputStream != null) {
+			user.setProfilepic(inputStream);
+		}
 		
 		String[] addressid = request.getParameterValues("addressid");
 		String[] address = request.getParameterValues("address");
@@ -88,7 +111,6 @@ public class EditProfileServlet extends HttpServlet {
 		
 		UserService userService = new UserServiceImpl();
 		userService.updateUserData(user, oldAddressList);
-		logger.info("in edit servlet");
 		
 		request.setAttribute("success" , "user successfully updated");
 		request.setAttribute("userData", user);

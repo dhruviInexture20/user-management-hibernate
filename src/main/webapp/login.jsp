@@ -23,20 +23,26 @@
 <body>
     <jsp:include page="header.jsp"></jsp:include>
     
+    
+    
     <div class="wrapper">
         <h1 class="text-center">User Login</h1>
         <div class="col-md-12">
+        	<div class="error">
         		<c:out value= "${ requestScope.error }" />
+        	</div>
+        	<div class="success">
         		<c:out value="${ requestScope.success }" />
+        	</div>
         </div>
         <form action="LoginServlet" method="post" id="login_form">
             <div class="form-group">
                 <label for="email">Email address</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="${loginEmail }">
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password" value="${loginPass }">
             </div>
             <input type="submit" class="btn btn-primary" value="Login">
         </form>
@@ -46,8 +52,6 @@
         </div>
     </div>
     
-    
-    <jsp:include page="footer.jsp"></jsp:include>
      
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="assets/library/jquery/jquery-3.6.0.min.js"></script>

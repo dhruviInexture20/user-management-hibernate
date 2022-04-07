@@ -39,7 +39,7 @@ public class UserDaoImpl implements UserDao {
 	static final String emailAvailability = "select email from userdata where email=?";
 	static final String userByEmailQuery = "select * from userdata where email=?";
 	static final String allUsersQuery = "select * from userdata where role='user'";
-	static final String updateUserQuery = "update userdata set fname=?, lname=?, password=?, phone=?, designation=?, dob=?, question=?, answer=? where email=?";
+	static final String updateUserQuery = "update userdata set fname=?, lname=?, password=?, phone=?, designation=?, dob=?, question=?, answer=?, profilepic=? where email=?";
 	static final String deleteUserQuery = "delete from userdata where userid=?";
 	static final String getUserEmailByIDQuery = "select email from userdata where userid=?";
 	static final String authSecurityQnAQuery = "select question,answer from userdata where email=?";
@@ -140,18 +140,21 @@ public class UserDaoImpl implements UserDao {
 	        user.setS_answer(rs.getString(answer));
 	        
 	        Blob blob = rs.getBlob("profilepic");
-	        InputStream inputStream = blob.getBinaryStream();
-	        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-	        byte[] buffer = new byte[4096];
-	        int bytesRead = -1;
- 
-	        while((bytesRead = inputStream.read(buffer))!= -1) {
-	        	outputStream.write(buffer, 0, bytesRead);
+	        if(blob != null) {
+	        	InputStream inputStream = blob.getBinaryStream();
+		        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		        byte[] buffer = new byte[4096];
+		        int bytesRead = -1;
+	 
+		        while((bytesRead = inputStream.read(buffer))!= -1) {
+		        	outputStream.write(buffer, 0, bytesRead);
+		        }
+		        byte[] imageBytes = outputStream.toByteArray();
+		        String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+		        user.setBase64Image(base64Image);
+
 	        }
-	        byte[] imageBytes = outputStream.toByteArray();
-	        String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-	        user.setBase64Image(base64Image);
-	      
+	        	      
 	        user.setPasswordString(rs.getString("password"));
 	        
 	        // TODO get all addresses of user
@@ -237,7 +240,12 @@ public class UserDaoImpl implements UserDao {
 			stmt.setString(6, user.getDob());
 			stmt.setString(7, user.getS_question());
 			stmt.setString(8, user.getS_answer());
-			stmt.setString(9, user.getEmail());
+			
+			InputStream inputStream = user.getProfilepic();
+			stmt.setBlob(9, inputStream);
+			
+			
+			stmt.setString(10, user.getEmail());
 			
 			stmt.executeUpdate();
 			logger.info("user data updated");

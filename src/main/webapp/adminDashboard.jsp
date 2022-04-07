@@ -52,6 +52,7 @@
     </div>
     </div>
 
+
 	<script src="assets/library/jquery/jquery-3.6.0.min.js"></script>
     <script src="assets/library/bootstrap/js/bootstrap.min.js"></script>
     <!-- <script src="assets/library/DataTables/DataTables-1.11.4/js/jquery.dataTables.min.js"></script>  -->

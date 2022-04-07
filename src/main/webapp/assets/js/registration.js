@@ -5,26 +5,40 @@ $(document).ready(function() {
 	
 	populateCountries("country_0", "state_0");
 
-	//var date = new Date().toISOString().slice(0, 10);
+	var date = new Date().toISOString().slice(0, 10);
+	console.log(date);
+
 	// $("#datepicker").datetimepicker({
-		// format: 'yyyy-mm-dd'
-		//endDate : new Date() ,
-		//maxDate: date,
+		
+	// 	format: 'yyyy-MM-dd',
+	// 	maxDate: date,
 	// });
 	
-//	$("#email").blur(function(){
-//		console.log("emaillll");	
-//	});
+	$("#datepicker").attr("max", date);
+
+
+	// $("#imgPreview1").error(function(){
+	// 	alert(" no img");
+	// });
+
+	// $("#imgPreview1").on("error", function() {
+	// 	$(this).hide();
+	// 	alert("img not available");
+	//   });
+
+	$(".img2").hide();
 
 	$("#profilepic").change(function() {
 		const file = this.files[0];
 		if (file) {
 			let reader = new FileReader();
 			reader.onload = function(event) {
-				$("#imgPreview")
-					.attr("src", event.target.result);
+				$(".img2").show();
+				$("#imgPreview2").attr("src", event.target.result);
+				$(".img1").hide();
 			};
 			reader.readAsDataURL(file);
+
 		}
 	});
 
@@ -65,6 +79,11 @@ $(document).ready(function() {
 	$.validator.addMethod("lettersonly", function(value, element) {
 		return this.optional(element) || /^[a-z\s]+$/i.test(value);
 	 });
+
+	 
+	
+
+
 
 	$("#registration_form").validate({
 		rules: {
@@ -110,8 +129,8 @@ $(document).ready(function() {
 			},
 			security_answer: {
 				required: true
-			}
-			// gender: "required",
+			},
+			gender: "required",
 
 		},
 		messages: {
@@ -141,8 +160,17 @@ $(document).ready(function() {
 			security_answer:{
 				required: "Please enter security answer",
 			}
-		}
+		},
+		errorPlacement: function(error, element) {
+  			if (element.attr("name") == "gender") {
+     		error.appendTo("#gender-error");
+ 		 } else {
+     		error.insertAfter(element);
+  	}
+},
+		
 	});
 	
 	
 });
+

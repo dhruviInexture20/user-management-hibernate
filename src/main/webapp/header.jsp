@@ -17,7 +17,7 @@
   <div class="container">
     <div class="navbar-header col-md-12 text-center">
   	
-    	<p class="navbar-brand">Welcome to User Management System</p>
+    	<h2 class="header">Welcome to User Management System</h2>
         </div>
   </div>
 </nav>

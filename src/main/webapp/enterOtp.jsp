@@ -23,10 +23,13 @@
                <div class="panel panel-default">
                   <div class="panel-body">
                      <div class="text-center">
+                     <div class="error">
+                     	<c:out value = "${msg }" />
+                     </div>
                         <h2 class="text-center">OTP Verification</h2>
                         <p>For OTP check your mail</p>
                         <div class="panel-body">
-                        	<c:out value = "${msg }" />
+            
                            <form action="VerifyOTPServlet" id="otp_form" role="form" autocomplete="off" class="form" method="post">
                               <div class="form-group">
                                  <div class="input-group">

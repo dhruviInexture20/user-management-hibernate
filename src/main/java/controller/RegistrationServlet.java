@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -20,6 +21,7 @@ import org.apache.log4j.Logger;
 import bean.AddressBean;
 import bean.UserBean;
 import service.UserServiceImpl;
+import utility.DataUtility;
 import utility.ServletUtility;
 
 
@@ -48,13 +50,11 @@ public class RegistrationServlet extends HttpServlet {
 		String s_question = request.getParameter("security_question");
 		String s_answer = request.getParameter("security_answer");
 		
-		logger.info(s_answer + "answer");
-		logger.info(s_question + " question");
-		
 		InputStream inputStream = null;
 		
 		Part filepart = request.getPart("profilepic");
 		inputStream = filepart.getInputStream();
+		
 		
 		// getting all address field values
 		String[] address = request.getParameterValues("address");
@@ -86,14 +86,14 @@ public class RegistrationServlet extends HttpServlet {
 			userAddress.setCity(city[i]);
 			userAddress.setCountry(country[i]);
 			userAddress.setPostalCode(postalcode[i]);
-			userAddress.setState(state[i]);
-			addressList.add(userAddress);	
+			userAddress.setState( i >= state.length ? null  : state[i]);
+			addressList.add(userAddress);
 		}
 		user.setAddressList(addressList);
 		
 		// perform validation
 		UserServiceImpl userService = new UserServiceImpl();
-		List<String> msg = userService.validateUser(user, confirm_password);
+		Set<String> msg = userService.validateUser(user, confirm_password);
 		
 		if(msg.isEmpty()) {
 			// no error
@@ -112,6 +112,8 @@ public class RegistrationServlet extends HttpServlet {
 		}
 		else {
 			// errors 
+
+			request.setAttribute("userData", user);
 			request.setAttribute("errorMsg", msg);
 		}
 		request.getRequestDispatcher("registration.jsp").forward(request, response);

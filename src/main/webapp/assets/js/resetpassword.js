@@ -31,8 +31,15 @@ $(document).ready(function(){
 				required: "Please provide a password",
 				equalTo: "Please enter the same password as above"
 			}
+		},
+		errorPlacement: function (error, element) {
+			error.insertAfter(element.parent());
 		}
 	});
+	
+	
+	
+	$(".error").css("color","red");
 	
 	
 });

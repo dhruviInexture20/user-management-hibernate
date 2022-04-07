@@ -16,17 +16,29 @@
     margin-bottom: 10px;
 }
 
-label.error {
+label.error,
+.error-msg {
     color: red;
 }
 
-#imgPreview {
-	padding: 10px;
-	margin: 10px;	
+.success-msg {
+	color: green;
+}
+
+.holder {
+	margin: 10px 0px;
 }
 
 img {
-	height: 300px;
-	width: 300px;
-	
+	height: 200px;
+	width: 200px;
+	border: 1px solid black;
+	border-radius: 10px;
 }
+
+
+.my-btn {
+	width: 100%;
+}
+
+    

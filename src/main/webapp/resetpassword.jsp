@@ -15,8 +15,7 @@
    </head>
    <body>
 
-   <c:out value="${email }" />
-   
+	<jsp:include page="header.jsp"></jsp:include>   
       <div class="form-gap"></div>
       <div class="container">
          <div class="row">
@@ -49,6 +48,9 @@
                               </div>
                             </form>
                         </div>
+                        <div class="links">
+                  			<a href="login.jsp">Go To Login page</a>
+              			</div>	
                      </div>
                   </div>
                </div>

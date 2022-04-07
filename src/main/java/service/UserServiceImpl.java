@@ -2,10 +2,13 @@ package service;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import javax.mail.Address;
 import javax.naming.AuthenticationException;
 import javax.xml.crypto.Data;
 
@@ -28,12 +31,12 @@ public class UserServiceImpl implements UserService {
 	
 	private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 	
-	@Override
-	public List<String> validateUser(UserBean user, String confirmPass) {
+	
+	public Set<String> validateUser(UserBean user, String confirmPass) {
 		
 		BasicConfigurator.configure();
 		
-		List<String> msg = new ArrayList<>();
+		Set<String> msg = new HashSet<String>();
 		
 		if(!DataUtility.isName(user.getFname())) {
 			msg.add("Please add valid FirstName");
@@ -78,9 +81,31 @@ public class UserServiceImpl implements UserService {
 		if(DataUtility.isNull(user.getDesignation())) {
 			msg.add("Please Select designation");
 		}
-		if(DataUtility.isPhoneNo(user.getPhone())) {
+		if(!DataUtility.isPhoneNo(user.getPhone())) {
 			msg.add("invalid phone number");
 		}
+		
+		List<AddressBean> addressList = user.getAddressList();
+		
+		addressList.stream().forEach(address -> {
+			
+			if(DataUtility.isNull(address.getStreetAddress())) {
+				msg.add("Fill all street addresses");
+			}
+			if(DataUtility.isNull(address.getCity())) {
+				msg.add("Select city in all address Fieldsets");
+			}
+			if(DataUtility.isNull(address.getState())) {
+				msg.add("select state in all address Fieldsets");
+			
+			}
+			if(DataUtility.isNull(address.getPostalCode())) {
+				msg.add("Fill all postalCodes in all address Fieldsets");
+			}
+			if(DataUtility.isNull(address.getCountry())) {
+				msg.add("select country in all address Fieldsets");
+			}
+		});
 		
 		return msg;
 	}

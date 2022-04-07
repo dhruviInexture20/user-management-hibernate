@@ -11,6 +11,10 @@
 <!-- Bootstrap -->
 <link href="assets/library/bootstrap/css/bootstrap.min.css"
 	rel="stylesheet">
+<link href="assets/library/datetimepicker/bootstrap-datetimepicker.css"
+	rel="stylesheet">
+
+
 <link href="assets/css/registration.css" rel="stylesheet">
 
 </head>
@@ -18,15 +22,21 @@
 <body>
  	
 	<section>
+	
 	 	
+	 	<c:set var="userData" value="${userData }" scope="session" />
 		
 		<div class="main container">
 			
 			<h1 class="text-center">User Registration</h1>
-			<div class="col-md-12" class="msg">
-				<c:out value= "${ errorMsg }" />				
-				<c:out value= "${ requestScope.success }" />
-				<c:out value= "${ requestScope.error }" />	
+			<div class="col-md-12 msg">
+				<div class="col-md-12 error-msg">
+					<c:out value= "${ errorMsg }" />
+					<c:out value= "${ requestScope.error }" />
+				</div>
+				<div class="col-md-12 success-msg">
+					<c:out value= "${ requestScope.success }" />
+				</div>
 			</div>
 			<form id="registration_form" 
 				  action= " <c:if test='${empty userData}'>RegistrationServlet </c:if>
@@ -134,6 +144,7 @@
 					<!-- gender -->
 					<div class="gender-input col-md-12">
 						<label>Select your gender</label>
+						<div id="gender-error"></div>
 						<div class="radio">
 							<label><input type="radio" id="male" value="male"
 								name="gender"
@@ -154,10 +165,17 @@
 							type="file" id="profilepic" name="profilepic"
 							accept=".jpg, .jpeg, .png">
 					</div>	
-					<div class="holder col-md-12">
-						<img id="imgPreview" src="data:image/jpg;base64,${userData.base64Image}" alt="profile pic">
+					<c:if test="${not empty userData.base64Image}">
+					<div class="holder col-md-4 img1">
+						<img id="imgPreview1" src="data:image/jpg;base64,${userData.base64Image}" alt="profile pic">
 					</div>
+					</c:if>
+				<div class="holder col-md-4 img2">
+					<img id="imgPreview2" src="#" alt="profile pic">
 				</div>
+						
+				</div>
+
 				
 				<div class="col-md-12">
 					<div class="form-group col-md-6">
@@ -177,7 +195,7 @@
 				
 				</div>
 				
-			
+				
 				
    				<div id="main-container">
 
@@ -185,9 +203,11 @@
 						<input type="hidden" value="" id="addressID_0" name="addressid">
 					
 						<!-- street address -->
+						<div class="col-md-12">
 						<div class="form-group col-md-12">
 							<label class="control-label" for="address_0">Street Address</label> 
 							<input class="form-control" type="text" id="streetAddress_0" name="address" required >
+						</div>
 						</div>
 						<br>
 
@@ -231,12 +251,12 @@
 					</div>
 				</div>
 				
-				<div class="col-md-4">
-					<a id="add-more" class="btn btn-info" href="javascript:;">Add
+				<div class="col-md-3">
+					<a id="add-more" class="btn btn-info my-btn" href="javascript:;">Add
 						Another Address</a>
 				</div>
-				<div class="col-md-4">
-					<input type="submit" class="btn btn-success" 
+				<div class="col-md-3">
+					<input type="submit" class="btn btn-success my-btn" 
 					value= "<c:if test="${empty userData}">Register </c:if>
 						<c:if test="${not empty userData}">Save Edits </c:if>
 					" >
@@ -244,16 +264,29 @@
 			</form>
 			
 			<c:if test="${empty userData}">
-			<div class="col-md-4">
-				<a href="login.jsp" class="btn btn-primary">Goto Login Page</a>
+			<div class="col-md-3">
+				<a href="login.jsp" class="btn btn-primary my-btn">Goto Login Page</a>
 			</div>
 			</c:if>
 			
 			<c:if test="${not empty userData}">
-			<div class="col-md-4">
-				<a href="LogOutServlet" class="btn btn-primary">LogOut</a>
+			<div class="col-md-3">
+				<a href="LogOutServlet" class="btn btn-primary my-btn">LogOut</a>
 			</div>
 			</c:if>
+			
+			<c:if test="${role eq 'admin'}">
+			<div class="col-md-3">
+				<a href="adminDashboard.jsp" class="btn btn-info my-btn">Back To Dashboard</a>
+			</div>
+			</c:if>
+			
+			<c:if test="${role eq 'user'}">
+			<div class="col-md-3">
+				<a href="welcome.jsp" class="btn btn-info my-btn">Back To Profile</a>
+			</div>
+			</c:if>
+			
 			
 			
 			
@@ -269,8 +302,11 @@
 	<script src="assets/library/clone-field-increment-id/cloneData.js"></script>
 	<script src="assets/library/jquery-validation-1.19.3/dist/jquery.validate.js"></script>
 	<script src="assets/library/List_Country_State-master/countries.js"></script>
-	<script src="assets/library/datetimepicker/moment.min.js"></script>
+	
+	
+	<!-- <script src="assets/library/datetimepicker/moment.min.js"></script>
 	<script src="assets/library/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+	 -->
 	<script src="assets/js/registration.js"></script>
 	
 	<c:if test="${not empty userData}">
