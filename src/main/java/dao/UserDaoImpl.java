@@ -142,6 +142,7 @@ public class UserDaoImpl implements UserDao {
 	        Blob blob = rs.getBlob("profilepic");
 	        if(blob != null) {
 	        	InputStream inputStream = blob.getBinaryStream();
+	        	
 		        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		        byte[] buffer = new byte[4096];
 		        int bytesRead = -1;

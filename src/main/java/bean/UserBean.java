@@ -1,6 +1,9 @@
 package bean;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.Base64;
 import java.util.List;
 
 import utility.PasswordSecurity;
@@ -46,9 +49,11 @@ public class UserBean {
 	public InputStream getProfilepic() {
 		return profilepic;
 	}
-	public void setProfilepic(InputStream inputStream) {
+	public void setProfilepic(InputStream inputStream) throws IOException {
 		this.profilepic = inputStream;
+				
 	}
+	
 	public String getFname() {
 		return fname;
 	}

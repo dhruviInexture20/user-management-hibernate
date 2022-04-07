@@ -14,11 +14,10 @@
 <body>
 
 <nav class="navbar navbar-default">
-  <div class="container">
-    <div class="navbar-header col-md-12 text-center">
+  <div class="container text-center">
   	
     	<h2 class="header">Welcome to User Management System</h2>
-        </div>
+        
   </div>
 </nav>
 

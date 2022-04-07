@@ -18,6 +18,10 @@ body {
 	display:none;
 }
 
+#wrapper {
+	overflow-x : auto;
+}
+
 /*
 .footer-wrapper {
 	

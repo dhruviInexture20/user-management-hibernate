@@ -32,13 +32,13 @@
                               <div class="form-group">
                                  <div class="input-group">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-lock color-blue"></i></span>
-                                    <input type="text" id="password1" class="form-control" placeholder="Enter new password" name="password1">
+                                    <input type="password" id="password1" class="form-control" placeholder="Enter new password" name="password1">
                                  </div>
                               </div>
                               <div class="form-group">
                                  <div class="input-group">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-lock color-blue"></i></span>
-                                    <input type="text" class="form-control" placeholder="Enter password again" name="password2">
+                                    <input type="password" class="form-control" placeholder="Enter password again" name="password2">
                                     <input type="hidden" value='<c:out value="${email }" />' name="email">
                                  </div>
                               </div>

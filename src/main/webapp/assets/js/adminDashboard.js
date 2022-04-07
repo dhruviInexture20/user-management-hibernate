@@ -8,6 +8,7 @@ $(document).ready(function () {
 	var table =
 		$("#myTable").DataTable({
 			//serverSide: true,
+			responsive: true,
 			ajax: {
 				type: 'POST',
 				url: 'GetAllUsers',
