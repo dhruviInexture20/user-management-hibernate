@@ -73,3 +73,11 @@ END
    PRIMARY KEY (`addressid`)
  )
  ```
+ 
+ ### Admin
+ ```
+ insert into userdata 
+(fname, lname, gender, designation, email, phone, password, dob, role) 
+values('Admin','Admin','male','admin','admin@gmail.com',9662648517,'h8RHSEIezBnVRR+ouswjSg==','2022-01-01', 'admin');
+
+ ```
