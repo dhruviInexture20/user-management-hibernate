@@ -43,7 +43,8 @@ public class DataUtility {
 	 
 	 public static boolean isEmail(String val) {
 //		    String emailreg = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-		 String emailreg = "^[A-Za-z0-9+_.-]+@(.+)$";
+//		 String emailreg = "^[A-Za-z0-9+_.-]+@(.+)$";
+		 String emailreg = "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$";
 		 if (!isNull(val)) {
 		      try {
 		        return val.matches(emailreg);

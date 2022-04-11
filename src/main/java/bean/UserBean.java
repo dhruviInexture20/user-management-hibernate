@@ -50,8 +50,7 @@ public class UserBean {
 		return profilepic;
 	}
 	public void setProfilepic(InputStream inputStream) throws IOException {
-		this.profilepic = inputStream;
-				
+		this.profilepic = inputStream;			
 	}
 	
 	public String getFname() {

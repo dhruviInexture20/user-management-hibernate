@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 	private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 	
 	
-	public Set<String> validateUser(UserBean user, String confirmPass) {
+	public Set<String> validateUser(UserBean user, String confirmPass, String role) {
 		
 		BasicConfigurator.configure();
 		
@@ -46,16 +46,19 @@ public class UserServiceImpl implements UserService {
 			msg.add("Please add valid LastName");	
 			logger.error("invalid lname");
 		}
-		if(!DataUtility.isEmail(user.getEmail())) {
-			msg.add("Please enter valid Email");
-			logger.error("invalid Email");
-		}
-		else {
-			UserDao dao = new UserDaoImpl();
-			boolean isAvailable = dao.isEmailAvailable(user.getEmail());
-			if(isAvailable) {
-				msg.add("Email Already registered");
-				logger.error("Email Already Exist");
+		
+		if(role.equals("newUser")){
+			if(!DataUtility.isEmail(user.getEmail())) {
+				msg.add("Please enter valid Email");
+				logger.error("invalid Email");
+			}
+			else {
+				UserDao dao = new UserDaoImpl();
+				boolean isAvailable = dao.isEmailAvailable(user.getEmail());
+				if(isAvailable) {
+					msg.add("Email Already registered");
+					logger.error("Email Already Exist");
+				}
 			}
 		}
 		

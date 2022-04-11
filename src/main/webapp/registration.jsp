@@ -79,7 +79,7 @@
 							class="form-control" id="email" name="email" placeholder="Email"
 							required
 							value = <c:out value='${userData.getEmail() }'/> 
-							<c:if test="${not empty userData}">  
+							<c:if test="${not empty role}">  
    								disabled  
 							</c:if>  
 							>
@@ -135,8 +135,8 @@
 					<div class="col-md-6">
 						<label for="birthdate">Birthday:</label> 
 						<input type="date"
-							value = "<c:out value="${userData.dob }"/>"
-							id="datepicker" name="birthdate" class="form-control" >
+							value = "<c:out value='${userData.dob }'/>"
+							id="datepicker" name="birthdate" class="form-control" required >
 					</div>
 				</div>
 
@@ -198,7 +198,7 @@
 				
 				
    				<div id="main-container">
-
+					
 					<div class="container-item col-md-12">
 						<input type="hidden" value="" id="addressID_0" name="addressid">
 					
@@ -252,13 +252,12 @@
 				</div>
 				
 				<div class="col-md-3">
-					<a id="add-more" class="btn btn-info my-btn" href="javascript:;">Add
-						Another Address</a>
+					<a id="add-more" class="btn btn-info my-btn" href="javascript:;">Add Address</a>
 				</div>
 				<div class="col-md-3">
 					<input type="submit" class="btn btn-success my-btn" 
-					value= "<c:if test="${empty userData}">Register </c:if>
-						<c:if test="${not empty userData}">Save Edits </c:if>
+					value= "<c:if test="${empty role}">Register </c:if>
+						<c:if test="${not empty role}">Save Edits </c:if>
 					" >
 				</div>
 			</form>
@@ -309,7 +308,8 @@
 	 -->
 	<script src="assets/js/registration.js"></script>
 	
-	<c:if test="${not empty userData}">
+	
+	<c:if test="${not empty role}">
 	<script src="assets/js/editProfile.js"></script>
 	</c:if>
 	

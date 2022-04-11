@@ -1,11 +1,14 @@
 package controller;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -38,38 +41,34 @@ public class EditProfileServlet extends HttpServlet {
 		BasicConfigurator.configure();
 		
 		HttpSession session = request.getSession(false);
-		UserBean user = new UserBean();
+		UserBean oldUser = new UserBean();
 		
 		String role = (String) session.getAttribute("role");
 		logger.info("role = " + role);
 		
-//		if(role.equals("admin")) {
-//			user = (UserBean) request.getAttribute("userData");
-//			logger.info(user == null);
-//		}
-//		else if(role.equals("user")) {
-//			user = (UserBean) session.getAttribute("userData");
-//		}
+		oldUser = (UserBean) session.getAttribute("userData");
+	
+		UserBean user = new UserBean();
 		
-		user = (UserBean) session.getAttribute("userData");
-		
-		logger.info(user == null);
-		
+		user.setUserid(oldUser.getUserid());
+		user.setEmail(oldUser.getEmail());
 		user.setFname(request.getParameter("firstname"));
 		user.setLname(request.getParameter("lastname"));
 		user.setPassword(request.getParameter("password"));
 		user.setPhone(request.getParameter("phone"));
+		user.setGender(request.getParameter("gender"));
 		user.setDesignation(request.getParameter("designation"));
 		user.setDob(request.getParameter("birthdate"));
 		user.setS_question(request.getParameter("security_question"));
 		user.setS_answer(request.getParameter("security_answer"));
+		String confirm_password = request.getParameter("confirm_password");
 		
 		InputStream inputStream = null;
 		Part filepart = request.getPart("profilepic");
 		inputStream = filepart.getInputStream();
 //		user.setProfilepic(inputStream);
 		logger.info("profile = " + (inputStream == null));
-//		
+		
 		if(inputStream != null) {
 			user.setProfilepic(inputStream);
 		}
@@ -81,7 +80,7 @@ public class EditProfileServlet extends HttpServlet {
 		String[] state = request.getParameterValues("state");
 		String[] postalcode = request.getParameterValues("postal_code");
 		
-		List<AddressBean> oldAddressList = user.getAddressList();
+		List<AddressBean> oldAddressList = oldUser.getAddressList();
 		
 		List<AddressBean> newAddressList = new ArrayList<>();
 		
@@ -104,16 +103,23 @@ public class EditProfileServlet extends HttpServlet {
 		}
 		user.setAddressList(newAddressList);
 		
-		logger.info("new address list = "+ newAddressList);
-		logger.info("old address = " + oldAddressList);
+		// perform validation
+		UserServiceImpl userService = new UserServiceImpl();
+		Set<String> msg = userService.validateUser(user, confirm_password, role);
 		
-		// update user in database 
+		if(msg.isEmpty()) {
+			// no error
+			// update user in database 
+			userService.updateUserData(user, oldAddressList);
+			request.setAttribute("success" , "user successfully updated");
+			request.setAttribute("userData", user);
+			
+		}
+		else {
+			request.setAttribute("userData", user);
+			request.setAttribute("errorMsg", msg);
+		}
 		
-		UserService userService = new UserServiceImpl();
-		userService.updateUserData(user, oldAddressList);
-		
-		request.setAttribute("success" , "user successfully updated");
-		request.setAttribute("userData", user);
 		request.getRequestDispatcher("registration.jsp").forward(request, response);
 		
 		

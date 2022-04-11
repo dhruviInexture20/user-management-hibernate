@@ -26,8 +26,9 @@
 	<jsp:include page="header.jsp"></jsp:include>
     <div class="body-wrapper">
 	<div id="wrapper" class="container">
-		<a href="LogOutServlet" class="btn btn-primary">Log Out</a> 
+		<a href="LogOutServlet" class="btn btn-primary">Log Out</a>
         <h2 class="text-center">User Detail</h2>
+        
         <table id="myTable" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr>

@@ -1,19 +1,19 @@
 /**
  * 
  */
-$(document).ready(function() {
-	
+$(document).ready(function () {
+
 	populateCountries("country_0", "state_0");
 
 	var date = new Date().toISOString().slice(0, 10);
 	console.log(date);
 
 	// $("#datepicker").datetimepicker({
-		
+
 	// 	format: 'yyyy-MM-dd',
 	// 	maxDate: date,
 	// });
-	
+
 	$("#datepicker").attr("max", date);
 
 
@@ -28,11 +28,11 @@ $(document).ready(function() {
 
 	$(".img2").hide();
 
-	$("#profilepic").change(function() {
+	$("#profilepic").change(function () {
 		const file = this.files[0];
 		if (file) {
 			let reader = new FileReader();
-			reader.onload = function(event) {
+			reader.onload = function (event) {
 				$(".img2").show();
 				$("#imgPreview2").attr("src", event.target.result);
 				$(".img1").hide();
@@ -51,37 +51,43 @@ $(document).ready(function() {
 		minLimit: 1,
 		removeConfirm: true,
 		removeConfirmMessage: 'Are you sure want to delete?',
-		afterRender: function() {
+		afterRender: function () {
 			console.log("country_" + i, "state_" + i);
 			populateCountries("country_" + i, "state_" + i);
 			i++;
 		},
-		afterRemove: function() {
+		afterRemove: function () {
 			i--;
 			var numItems = $(".container-item").length;
 			if (numItems <= 1) {
 				$(".remove-item").hide();
 			}
 		},
-		beforeRender: function() {
+		beforeRender: function () {
 			var numItemsAfterAdd = $(".container-item").length;
-			if(numItemsAfterAdd >= 1){
+			if (numItemsAfterAdd >= 1) {
 				$(".remove-item").show();
 			}
 		},
 	});
 
-	$.validator.addMethod("passwordFormatCheck", function(value, element) {
+	$.validator.addMethod("passwordFormatCheck", function (value, element) {
 		//return this.optional(element) || /^(?=.*\d)(?=.*[A-Z])(?=.*\W).*$/i.test(value);
 		return this.optional(element) || /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/i.test(value);
 	}, 'Password must contain one capital letter,one numerical and one special character');
 
-	$.validator.addMethod("lettersonly", function(value, element) {
+	$.validator.addMethod("lettersonly", function (value, element) {
 		return this.optional(element) || /^[a-z\s]+$/i.test(value);
-	 });
+	});
 
-	 
-	
+	// ^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$
+
+
+	$.validator.addMethod("validateEmail", function (value, element) {
+		//return this.optional(element) || /^(?=.*\d)(?=.*[A-Z])(?=.*\W).*$/i.test(value);
+		return this.optional(element) || /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/i.test(value);
+	}, 'Enter Valid Email');
+
 
 
 
@@ -105,16 +111,16 @@ $(document).ready(function() {
 			},
 			email: {
 				required: true,
-				email: true,
+				validateEmail: true,
 				"remote": {
 					url: 'CheckEmailAvailability',
 					type: "post",
-					data : {
-						email : function(){
+					data: {
+						email: function () {
 							return $("#email").val();
 						}
 					}
-				} 
+				}
 			},
 			phone: {
 				required: true,
@@ -138,10 +144,10 @@ $(document).ready(function() {
 				required: "Please enter your firstname",
 				lettersonly: "Please enter valid firstname",
 			},
-			lastname:{
+			lastname: {
 				required: "Please enter your lastname",
 				lettersonly: "Please enter valid lastname",
-			} ,
+			},
 			password: {
 				required: "Please provide a password",
 			},
@@ -154,23 +160,62 @@ $(document).ready(function() {
 				email: "Please enter a valid email address",
 				remote: "The corresponding email already exists"
 			},
-			security_question:{
+			security_question: {
 				required: "Please select any security question"
 			},
-			security_answer:{
+			security_answer: {
 				required: "Please enter security answer",
 			}
 		},
-		errorPlacement: function(error, element) {
-  			if (element.attr("name") == "gender") {
-     		error.appendTo("#gender-error");
- 		 } else {
-     		error.insertAfter(element);
-  	}
-},
-		
+		errorPlacement: function (error, element) {
+			if (element.attr("name") == "gender") {
+				error.appendTo("#gender-error");
+			} else {
+				error.insertAfter(element);
+			}
+		},
+
 	});
-	
-	
+
+
+
+	// $.ajax({
+	// 	url: "GetUserAddressServlet",
+	// 	type: "post",
+	// 	// data:{
+	// 	// 	userid : function(){
+	// 	// 		console.log($("#userid").val());
+	// 	// 		return $("#userid").val();
+	// 	// 	},
+	// 	// },
+	// 	success : function(response){
+			
+	// 		var addressList = jQuery.parseJSON(response);
+	// 		console.log(addressList);
+	// 		var count = 0;
+	// 		console.log("address = "+addressList.length);
+			
+	// 		$.each(addressList, function(key, address){
+	// 			$("#addressID_"+count).val(address.addressid);
+	// 			console.log($("#addressID_"+count).val());
+	// 			$("#streetAddress_"+count).val(address.streetAddress);
+				
+	// 			$("#city_"+count).val(address.city);
+	// 			$("#postal_code_"+count).val(address.postalCode);
+	// 			$("#country_"+count).val(address.country);
+	// 			populateStates( "country_"+count , "state_"+count );
+	// 			$("#state_"+count).val(address.state);
+	// 			count++;
+	// 			if(addressList.length > count){
+	// 				$("#add-more").click();
+	// 			}
+	// 		});
+	// 	},
+	// 	error: function(){
+	// 		alert("alert while retriving user data");
+	// 	}
+	// });
+
+
 });
 

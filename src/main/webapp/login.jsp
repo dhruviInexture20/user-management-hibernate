@@ -21,6 +21,16 @@
 </head>
 
 <body>
+
+    <c:if test="${ role eq 'admin'}" >
+        <c:redirect url = "adminDashboard.jsp"/>
+    </c:if>
+    
+    <c:if test="${ role eq 'user' }">
+    	<c:redirect url="welcome.jsp"/>
+    </c:if>
+
+
     <jsp:include page="header.jsp"></jsp:include>
     
     

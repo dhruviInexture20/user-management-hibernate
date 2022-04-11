@@ -6,7 +6,7 @@
 
 $(document).ready(function() {
 	
-	$("input[name=gender]").attr("disabled", true);
+	// $("input[name=gender]").attr("disabled", true);
 	
 
 	// get user address

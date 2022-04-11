@@ -8,7 +8,7 @@ import bean.UserBean;
 
 public interface UserService {
 
-	Set<String> validateUser(UserBean user, String confirmPass);
+	Set<String> validateUser(UserBean user, String confirmPass, String role);
 
 	int saveUser(UserBean user);
 

@@ -93,7 +93,7 @@ public class RegistrationServlet extends HttpServlet {
 		
 		// perform validation
 		UserServiceImpl userService = new UserServiceImpl();
-		Set<String> msg = userService.validateUser(user, confirm_password);
+		Set<String> msg = userService.validateUser(user, confirm_password, "newUser");
 		
 		if(msg.isEmpty()) {
 			// no error
@@ -113,6 +113,7 @@ public class RegistrationServlet extends HttpServlet {
 		else {
 			// errors 
 
+			request.setAttribute("role", "newUser");
 			request.setAttribute("userData", user);
 			request.setAttribute("errorMsg", msg);
 		}

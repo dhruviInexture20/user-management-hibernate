@@ -2,17 +2,20 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import bean.AddressBean;
+import bean.UserBean;
 import service.UserService;
 import service.UserServiceImpl;
 
@@ -30,13 +33,28 @@ public class GetUserAddressServlet extends HttpServlet {
 		
 		response.setContentType("text/html");
 		PrintWriter out =  response.getWriter();
+		HttpSession session = request.getSession(false);
 		
 		UserService service = new UserServiceImpl();
+		String role = (String) session.getAttribute("role");
+		List<AddressBean> addressList = new ArrayList<AddressBean>();
 		
-		String useridString = request.getParameter("userid");
-		int userid = Integer.parseInt(useridString);
+		if( role.equals("admin")) {
+			// with userid
+			String useridString = request.getParameter("userid");
+			int userid = Integer.parseInt(useridString);
+			addressList = service.getUserAddress(userid);
+			
+		}
+		else if (role.equals("user")) {
+			UserBean user =(UserBean) session.getAttribute("userData");
+			addressList = user.getAddressList();
+			
+		}
 		
-		List<AddressBean> addressList = service.getUserAddress(userid);
+		
+		
+		
 		
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		out.print(gson.toJsonTree(addressList));

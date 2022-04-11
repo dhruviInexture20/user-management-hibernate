@@ -39,7 +39,7 @@ public class UserDaoImpl implements UserDao {
 	static final String emailAvailability = "select email from userdata where email=?";
 	static final String userByEmailQuery = "select * from userdata where email=?";
 	static final String allUsersQuery = "select * from userdata where role='user'";
-	static final String updateUserQuery = "update userdata set fname=?, lname=?, password=?, phone=?, designation=?, dob=?, question=?, answer=?, profilepic=? where email=?";
+	static final String updateUserQuery = "update userdata set fname=?, lname=?, password=?, phone=?, designation=?, dob=?, question=?, answer=?, profilepic=?	, gender=? where email=?";
 	static final String deleteUserQuery = "delete from userdata where userid=?";
 	static final String getUserEmailByIDQuery = "select email from userdata where userid=?";
 	static final String authSecurityQnAQuery = "select question,answer from userdata where email=?";
@@ -140,6 +140,7 @@ public class UserDaoImpl implements UserDao {
 	        user.setS_answer(rs.getString(answer));
 	        
 	        Blob blob = rs.getBlob("profilepic");
+	        logger.info("blob = " + blob);
 	        if(blob != null) {
 	        	InputStream inputStream = blob.getBinaryStream();
 	        	
@@ -153,7 +154,7 @@ public class UserDaoImpl implements UserDao {
 		        byte[] imageBytes = outputStream.toByteArray();
 		        String base64Image = Base64.getEncoder().encodeToString(imageBytes);
 		        user.setBase64Image(base64Image);
-
+		        logger.info(base64Image);
 	        }
 	        	      
 	        user.setPasswordString(rs.getString("password"));
@@ -243,11 +244,16 @@ public class UserDaoImpl implements UserDao {
 			stmt.setString(8, user.getS_answer());
 			
 			InputStream inputStream = user.getProfilepic();
+			logger.info(inputStream);
+			logger.info("input steeam ==" + (inputStream==null));
 			stmt.setBlob(9, inputStream);
 			
+			stmt.setString(10, user.getGender());
 			
-			stmt.setString(10, user.getEmail());
-			
+			stmt.setString(11, user.getEmail());
+			logger.info(stmt);
+			logger.info(inputStream);
+			logger.info("inputstream is null = " + inputStream == null );
 			stmt.executeUpdate();
 			logger.info("user data updated");
 			

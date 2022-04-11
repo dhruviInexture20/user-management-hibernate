@@ -30,7 +30,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="profile-img">
-                            <img src="data:image/jpg;base64,${userData.base64Image}" alt=""/>
+                            <img src="data:image/jpg;base64,${userData.getBase64Image()}" alt=""/>
                         </div>
         
                     </div>
