@@ -1,21 +1,20 @@
 package utility;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import service.AdminServiceImpl;
 
 
 public class DBConnection {
 	private static DBConnection conn = null;
-	static final String DRIVER = "com.mysql.cj.jdbc.Driver";
-	static final String URL = "jdbc:mysql://localhost/user_management";
-	static final String USERNAME = "root";
-	static final String PASSWORD = "admin";
+	
 	private static final Logger logger = LogManager.getLogger(DBConnection.class);
 	
 	private DBConnection() {
@@ -31,16 +30,32 @@ public class DBConnection {
 	
 	public Connection getConnection() {
 		Connection conn = null;
-		
+		InputStream input = getClass().getResourceAsStream("config.properties");
+
+		Properties prop = new Properties();
 		try {
-			Class.forName(DRIVER);
-			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+			prop.load(input);
+			
+			logger.info("username = " + prop.getProperty("db.username"));
+			logger.info("password = " + prop.getProperty("db.password"));
+			
+			String driver = prop.getProperty("db.driver");
+			String url =  prop.getProperty("db.url");
+			String username = prop.getProperty("db.username");
+			String password = prop.getProperty("db.password");
+			
+			
+			Class.forName(driver);
+			conn = DriverManager.getConnection(url, username, password);
+			
+		} catch (IOException | ClassNotFoundException | SQLException e) {
+			logger.error(e);
+		} finally {
+			try {
+				input.close();
+			} catch (IOException e) {
+				logger.error(e);
 			}
-		catch(SQLException e){
-			logger.error(e);
-		}
-		catch(Exception e) {
-			logger.error(e);
 		}
 		return conn;
 	}

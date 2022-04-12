@@ -1,16 +1,12 @@
 package service;
 
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import javax.mail.Address;
 import javax.naming.AuthenticationException;
-import javax.xml.crypto.Data;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.LogManager;
@@ -126,7 +122,7 @@ public class UserServiceImpl implements UserService {
 	public UserBean getUser(String email, String password) {
 		
 		UserDao userDao = new UserDaoImpl();
-		UserBean user = new UserBean();
+		UserBean user;
 		
 		user = userDao.userLogin(email);
 		if(user == null || user.getUserid() == 0) {

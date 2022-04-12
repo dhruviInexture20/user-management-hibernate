@@ -1,21 +1,32 @@
 package dao;
 
-import java.sql.ResultSet;
+import java.util.List;
 
 import bean.UserBean;
 
 public interface UserDao {
-	public int addUser(UserBean user);
-	public int getNextUserID();
-	public UserBean userLogin(String email);
-	public ResultSet getListOfUsers();
+	int addUser(UserBean user);
+
+	int getNextUserID();
+
+	UserBean userLogin(String email);
+
+	List<UserBean> getListOfUsers() throws Exception;
+
 	boolean isEmailAvailable(String email);
-	public void updateUser(UserBean user);
-	public void deleteUser(String userid);
-	public UserBean getUserByUserID(int userid);
-	public boolean checkSecurityQnA(String email, String security_question, String security_answer);
-	public void resetPass(String email, String newPassword);
-	public void storeOtp(String email, String otp);
-	public String getUserOTP(String email);
-	
+
+	void updateUser(UserBean user);
+
+	void deleteUser(String userid);
+
+	UserBean getUserByUserID(int userid);
+
+	boolean checkSecurityQnA(String email, String security_question, String security_answer);
+
+	void resetPass(String email, String newPassword);
+
+	void storeOtp(String email, String otp);
+
+	String getUserOTP(String email);
+
 }

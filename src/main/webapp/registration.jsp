@@ -301,11 +301,6 @@
 	<script src="assets/library/clone-field-increment-id/cloneData.js"></script>
 	<script src="assets/library/jquery-validation-1.19.3/dist/jquery.validate.js"></script>
 	<script src="assets/library/List_Country_State-master/countries.js"></script>
-	
-	
-	<!-- <script src="assets/library/datetimepicker/moment.min.js"></script>
-	<script src="assets/library/datetimepicker/bootstrap-datetimepicker.min.js"></script>
-	 -->
 	<script src="assets/js/registration.js"></script>
 	
 	

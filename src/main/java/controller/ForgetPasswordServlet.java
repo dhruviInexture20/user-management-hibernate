@@ -6,17 +6,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import bean.EmailMessageBean;
 import service.UserService;
 import service.UserServiceImpl;
-import utility.EmailUtility;
-import utility.ServletUtility;
 
 public class ForgetPasswordServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

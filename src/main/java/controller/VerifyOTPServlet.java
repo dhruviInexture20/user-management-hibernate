@@ -5,7 +5,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import service.UserService;
 import service.UserServiceImpl;
@@ -21,12 +20,10 @@ public class VerifyOTPServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-//		HttpSession session = request.getSession(false);
-//		String otp =(String) session.getAttribute("otp");
 		
 		String email = request.getParameter("email");
 //		String otp = request.getParameter("hidden_otp");
-		int otpFromUser = Integer.parseInt(request.getParameter("otp"));
+		int otpFromUser = Integer.parseInt(request.getParameter("otp").trim());
 		
 		UserService userService = new UserServiceImpl();
 		int otp = userService.getOtpByEmail(email);

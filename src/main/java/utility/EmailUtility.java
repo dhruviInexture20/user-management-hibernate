@@ -71,9 +71,6 @@ public class EmailUtility {
 
 			if (addressTo.length > 0) {
 				msg.setRecipients(Message.RecipientType.TO, addressTo);
-//               msg.setRecipients(Message.RecipientType.TO, );
-
-				logger.info("receipient is set to " + addressTo);
 			}
 
 			// Setting the Subject and Content Type
@@ -87,6 +84,8 @@ public class EmailUtility {
 			case EmailMessageBean.TEXT_MSG:
 				msg.setContent(emailMessageDTO.getMessage(), "text/plain");
 				break;
+			default:
+				logger.info("default");
 			}
 
 			// Send the mail

@@ -1,9 +1,10 @@
 package controller;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Set;
 
@@ -21,8 +22,6 @@ import org.apache.log4j.Logger;
 import bean.AddressBean;
 import bean.UserBean;
 import service.UserServiceImpl;
-import utility.DataUtility;
-import utility.ServletUtility;
 
 
 
@@ -55,6 +54,16 @@ public class RegistrationServlet extends HttpServlet {
 		Part filepart = request.getPart("profilepic");
 		inputStream = filepart.getInputStream();
 		
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		byte[] buffer = new byte[4096];
+		int bytesRead = -1;
+
+		while ((bytesRead = inputStream.read(buffer)) != -1) {
+			outputStream.write(buffer, 0, bytesRead);
+		}
+		byte[] imageBytes = outputStream.toByteArray();
+		String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+		
 		
 		// getting all address field values
 		String[] address = request.getParameterValues("address");
@@ -73,7 +82,8 @@ public class RegistrationServlet extends HttpServlet {
 		user.setPhone(phone);
 		user.setPassword(password);
 		user.setDob(birthdate);
-		user.setProfilepic(inputStream);
+//		user.setProfilepic(inputStream);
+		user.setBase64Image(base64Image);
 		user.setS_question(s_question);
 		user.setS_answer(s_answer);
 		

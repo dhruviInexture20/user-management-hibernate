@@ -22,10 +22,10 @@ public class AddressDaoImpl implements AddressDao {
 	static final String getUserAddressQ = "select * from user_address where userid=?";
 	static final String deleteAddressByIdQuery = "delete from user_address where addressid=?";
 	static final String updateAddressQuery = "update user_address set street_address=?, city=?, state=?, postal_code=?, country=? where addressid=?";
-	
+
 	@Override
 	public void addAddressList(List<AddressBean> list, int userid) {
-		
+
 		BasicConfigurator.configure();
 		Connection conn = DBConnection.getInstance().getConnection();
 		PreparedStatement stmt = null;
@@ -45,30 +45,46 @@ public class AddressDaoImpl implements AddressDao {
 				count++;
 			}
 			stmt.executeBatch();
-			
+
 		} catch (SQLException e) {
 			logger.error(e);
+		} finally {
+
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					logger.error(e);
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					logger.error(e);
+				}
+			}
 		}
 	}
 
 	@Override
 	public List<AddressBean> getAddress(int userid) {
-		
+
 		BasicConfigurator.configure();
 		Connection conn = DBConnection.getInstance().getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		
+
 		List<AddressBean> addressList = new ArrayList<>();
 		AddressBean userAddress = null;
-		
+
 		try {
 			stmt = conn.prepareStatement(getUserAddressQ);
 			stmt.setInt(1, userid);
-			
+
 			rs = stmt.executeQuery();
-			
-			while(rs.next()) {
+
+			while (rs.next()) {
 				userAddress = new AddressBean();
 				userAddress.setUserid(rs.getInt("userid"));
 				userAddress.setAddressid(rs.getInt("addressid"));
@@ -77,36 +93,66 @@ public class AddressDaoImpl implements AddressDao {
 				userAddress.setCountry(rs.getString("country"));
 				userAddress.setCity(rs.getString("city"));
 				userAddress.setPostalCode(rs.getString("postal_code"));
-				
+
 				addressList.add(userAddress);
 			}
 			return addressList;
-			
+
 		} catch (SQLException e) {
 			logger.error(e);
+		} finally {
+
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					logger.error(e);
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					logger.error(e);
+				}
+			}
 		}
-		
-		
+
 		return null;
 	}
 
 	@Override
 	public void deleteAddressById(Integer addressid) {
-		
+
 		BasicConfigurator.configure();
 		Connection conn = DBConnection.getInstance().getConnection();
 		PreparedStatement stmt = null;
-		
+
 		try {
 			stmt = conn.prepareStatement(deleteAddressByIdQuery);
 			stmt.setInt(1, addressid);
 			stmt.executeUpdate();
 			logger.info("delete " + addressid);
-			
+
 		} catch (SQLException e) {
 			logger.info(e);
+		} finally {
+
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					logger.error(e);
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					logger.error(e);
+				}
+			}
 		}
-		
 	}
 
 	@Override
@@ -114,7 +160,7 @@ public class AddressDaoImpl implements AddressDao {
 		BasicConfigurator.configure();
 		Connection conn = DBConnection.getInstance().getConnection();
 		PreparedStatement stmt = null;
-		
+
 		try {
 			stmt = conn.prepareStatement(addAddressQuery);
 			stmt.setInt(1, userid);
@@ -125,23 +171,38 @@ public class AddressDaoImpl implements AddressDao {
 			stmt.setString(6, address.getCountry());
 			stmt.execute();
 			logger.info("add address" + userid + "userid");
-			
+
 		} catch (SQLException e) {
 			logger.info(e);
+		} finally {
+
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					logger.error(e);
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					logger.error(e);
+				}
+			}
 		}
-		
-	}
+		}
 
 	@Override
 	public void updateAddress(AddressBean address) {
-		
+
 		BasicConfigurator.configure();
 		Connection conn = DBConnection.getInstance().getConnection();
 		PreparedStatement stmt = null;
-		
+
 		try {
 			stmt = conn.prepareStatement(updateAddressQuery);
-			
+
 			stmt.setString(1, address.getStreetAddress());
 			stmt.setString(2, address.getCity());
 			stmt.setString(3, address.getState());
@@ -150,13 +211,26 @@ public class AddressDaoImpl implements AddressDao {
 			stmt.setInt(6, address.getAddressid());
 			stmt.executeUpdate();
 			logger.info("user address updated");
-			
-			
-			
+
 		} catch (SQLException e) {
 			logger.info(e);
+		} finally {
+
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					logger.error(e);
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					logger.error(e);
+				}
+			}
 		}
-		
-		
+
 	}
 }

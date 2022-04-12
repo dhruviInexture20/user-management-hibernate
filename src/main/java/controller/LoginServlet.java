@@ -7,24 +7,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
-import com.mysql.cj.log.Log;
-
 import bean.UserBean;
-import dao.UserDao;
-import dao.UserDaoImpl;
 import service.UserService;
 import service.UserServiceImpl;
-import utility.ServletUtility;
 
 /**
  * Servlet implementation class LoginServlet
  */
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger logger = LogManager.getLogger(LoginServlet.class);
 	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -48,14 +39,14 @@ public class LoginServlet extends HttpServlet {
 		}
 		
 		// login as admin
-		else if(user != null && user.getRole().equals("admin")) {
+		else if(user.getRole().equals("admin")) {
 			HttpSession session = request.getSession();
 			session.setAttribute("role", "admin");
 			response.sendRedirect("adminDashboard.jsp");
 		}
 		
 		// login as user
-		else if(user != null && user.getRole().equals("user")) {
+		else if( user.getRole().equals("user")) {
 			HttpSession session = request.getSession();
 			session.setAttribute("role", "user");
 			session.setAttribute("userData", user);

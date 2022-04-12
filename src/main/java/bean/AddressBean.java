@@ -1,7 +1,10 @@
 package bean;
 
-public class AddressBean {
-	
+import java.io.Serializable;
+
+public class AddressBean implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	private int addressid;
 	private int userid;
 	private String streetAddress;

@@ -1,15 +1,19 @@
 package bean;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Base64;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import utility.PasswordSecurity;
 
 
-public class UserBean {
+public class UserBean implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private int userid;
 	private String fname;
 	private String lname;
@@ -19,18 +23,12 @@ public class UserBean {
 	private String dob;
 	private String designation;
 	private String gender;
-	private InputStream profilepic;
 	private List<AddressBean> addressList;
 	private String s_question;
 	private String s_answer;
 	private String role;
 	private String base64Image;
-	//private byte[] image;
 
-//	public byte[] getImage() {
-//		return this.image;
-//	}
-//	
 	
 	public String getBase64Image() {
 		return base64Image;
@@ -45,12 +43,6 @@ public class UserBean {
 	}
 	public void setUserid(int userid) {
 		this.userid = userid;
-	}
-	public InputStream getProfilepic() {
-		return profilepic;
-	}
-	public void setProfilepic(InputStream inputStream) throws IOException {
-		this.profilepic = inputStream;			
 	}
 	
 	public String getFname() {
@@ -97,10 +89,12 @@ public class UserBean {
 		this.gender = gender;
 	}
 	public List<AddressBean> getAddressList() {
-		return addressList;
+//		return addressList;
+		return new ArrayList<AddressBean>(this.addressList);
 	}
 	public void setAddressList(List<AddressBean> addressList) {
-		this.addressList = addressList;
+		this.addressList = new ArrayList<AddressBean>(addressList);
+//		this.addressList = addressList;
 	}
 	public String getRole() {
 		return role;
@@ -146,11 +140,4 @@ public class UserBean {
 	public void setS_answer(String s_answer) {
 		this.s_answer = s_answer;
 	}
-	
-//	public Date getDobObj() throws ParseException {
-////		String sDate1="31/12/1998";  
-//	    Date date1=new SimpleDateFormat("yyyy-mm-dd").parse(dob);  
-//	    System.out.println(date1 + "parse");
-//	    return date1;
-//	}
 }

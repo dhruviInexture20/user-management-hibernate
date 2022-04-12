@@ -78,11 +78,18 @@
 			<version>1.2</version>
 		</dependency>
 
-
 	</dependencies>
 
 	<build>
 		<finalName>usermanagement</finalName>
+		
+		<resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources> 
+		
 		<pluginManagement><!-- lock down plugins versions to avoid using Maven 
 				defaults (may be moved to parent pom) -->
 			<plugins>
@@ -125,7 +132,23 @@
 						<path>/empManagement</path>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-pmd-plugin</artifactId>
+					<version>3.16.0</version>
+				</plugin>
+				
 			</plugins>
 		</pluginManagement>
 	</build>
+	<reporting>
+    <plugins>
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.0.4</version>
+      </plugin>
+    </plugins>
+  </reporting>
+	
 </project>
