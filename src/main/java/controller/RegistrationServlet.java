@@ -123,8 +123,8 @@ public class RegistrationServlet extends HttpServlet {
 		else {
 			// errors 
 
-			request.setAttribute("role", "newUser");
-			request.setAttribute("userData", user);
+//			request.setAttribute("role", "newUser");
+//			request.setAttribute("userData", user);
 			request.setAttribute("errorMsg", msg);
 		}
 		request.getRequestDispatcher("registration.jsp").forward(request, response);

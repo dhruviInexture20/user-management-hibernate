@@ -16,6 +16,7 @@ import com.google.gson.GsonBuilder;
 
 import bean.AddressBean;
 import bean.UserBean;
+import service.AdminService;
 import service.UserService;
 import service.UserServiceImpl;
 
@@ -43,7 +44,10 @@ public class GetUserAddressServlet extends HttpServlet {
 			// with userid
 			String useridString = request.getParameter("userid");
 			int userid = Integer.parseInt(useridString);
-			addressList = service.getUserAddress(userid);
+			UserBean user = service.getUserForEdit(userid);
+			
+			addressList = user.getAddressList();
+//			addressList = service.getUserAddress(userid);
 			
 		}
 		else if (role.equals("user")) {

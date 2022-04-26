@@ -36,7 +36,7 @@
     
     
     <div class="wrapper">
-        <h1 class="text-center">User Login</h1>
+        <h1 class="text-center">User-Login</h1>
         <div class="col-md-12">
         	<div class="error">
         		<c:out value= "${ requestScope.error }" />

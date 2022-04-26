@@ -16,7 +16,7 @@ import utility.DBConnection;
 
 public class AddressDaoImpl implements AddressDao {
 
-	private static final Logger logger = LogManager.getLogger(AddressDaoImpl.class);
+	private static Logger logger = Logger.getLogger(AddressDaoImpl.class);
 	static final String addAddressQuery = "insert into user_address"
 			+ "(userid, street_address, city, state, postal_code, country)" + "values(?,?,?,?,?,?)";
 	static final String getUserAddressQ = "select * from user_address where userid=?";
@@ -25,8 +25,7 @@ public class AddressDaoImpl implements AddressDao {
 
 	@Override
 	public void addAddressList(List<AddressBean> list, int userid) {
-
-		BasicConfigurator.configure();
+		
 		Connection conn = DBConnection.getInstance().getConnection();
 		PreparedStatement stmt = null;
 		int count = 0;
@@ -70,7 +69,7 @@ public class AddressDaoImpl implements AddressDao {
 	@Override
 	public List<AddressBean> getAddress(int userid) {
 
-		BasicConfigurator.configure();
+		
 		Connection conn = DBConnection.getInstance().getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -86,7 +85,7 @@ public class AddressDaoImpl implements AddressDao {
 
 			while (rs.next()) {
 				userAddress = new AddressBean();
-				userAddress.setUserid(rs.getInt("userid"));
+//				userAddress.setUserid(rs.getInt("userid"));
 				userAddress.setAddressid(rs.getInt("addressid"));
 				userAddress.setStreetAddress(rs.getString("street_address"));
 				userAddress.setState(rs.getString("state"));
@@ -124,7 +123,7 @@ public class AddressDaoImpl implements AddressDao {
 	@Override
 	public void deleteAddressById(Integer addressid) {
 
-		BasicConfigurator.configure();
+		
 		Connection conn = DBConnection.getInstance().getConnection();
 		PreparedStatement stmt = null;
 
@@ -157,7 +156,6 @@ public class AddressDaoImpl implements AddressDao {
 
 	@Override
 	public void addAddress(AddressBean address, int userid) {
-		BasicConfigurator.configure();
 		Connection conn = DBConnection.getInstance().getConnection();
 		PreparedStatement stmt = null;
 
@@ -196,7 +194,6 @@ public class AddressDaoImpl implements AddressDao {
 	@Override
 	public void updateAddress(AddressBean address) {
 
-		BasicConfigurator.configure();
 		Connection conn = DBConnection.getInstance().getConnection();
 		PreparedStatement stmt = null;
 

@@ -16,7 +16,7 @@ import service.UserServiceImpl;
 
 public class ForgetPasswordServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger logger = LogManager.getLogger(ForgetPasswordServlet.class);
+	private static Logger logger = LogManager.getLogger(ForgetPasswordServlet.class);
 	
 		
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

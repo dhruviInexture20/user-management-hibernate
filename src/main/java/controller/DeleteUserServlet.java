@@ -20,7 +20,7 @@ import service.UserServiceImpl;
 public class DeleteUserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger logger = LogManager.getLogger(DeleteUserServlet.class);
+	private static Logger logger = Logger.getLogger(DeleteUserServlet.class);
 	
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

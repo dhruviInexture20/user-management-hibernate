@@ -25,7 +25,7 @@ import service.AdminServiceImpl;
  */
 public class GetAllUsers extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger logger = LogManager.getLogger(GetAllUsers.class);
+	private static Logger logger = LogManager.getLogger(GetAllUsers.class);
 	
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -37,14 +37,11 @@ public class GetAllUsers extends HttpServlet {
 		
 		try {
 			List<UserBean> users  = adminService.getList();
-			logger.info(users);
 			
 			Gson gson = new GsonBuilder().setPrettyPrinting().create();
 			
 			JsonObject json = new JsonObject();
 			json.add("data",gson.toJsonTree(users));
-				
-			logger.info(json);
 			out.print(json);
 			
 		} catch (Exception e) {

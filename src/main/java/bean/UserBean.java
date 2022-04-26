@@ -5,28 +5,56 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import utility.PasswordSecurity;
 
 
+@Entity
+@Table(name="user")
 public class UserBean implements Serializable {
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int userid;
 	private String fname;
 	private String lname;
+	
+	@Column(unique = true)
 	private String email;
 	private String phone;
 	private String password;
 	private String dob;
 	private String designation;
 	private String gender;
+	
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinColumn(name = "userid_address")
+	@Cascade(CascadeType.ALL)
 	private List<AddressBean> addressList;
 	private String s_question;
 	private String s_answer;
-	private String role;
+	
+//	@ColumnDefault("user")
+	private String role = "user";
+
 	private String base64Image;
 
 	
@@ -48,6 +76,7 @@ public class UserBean implements Serializable {
 	public String getFname() {
 		return fname;
 	}
+	
 	public void setFname(String fname) {
 		this.fname = fname;
 	}
