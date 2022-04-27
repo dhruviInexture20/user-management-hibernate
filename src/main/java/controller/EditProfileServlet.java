@@ -17,8 +17,6 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 import bean.AddressBean;
 import bean.UserBean;
@@ -31,7 +29,6 @@ import service.UserServiceImpl;
 @MultipartConfig
 public class EditProfileServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static Logger logger = LogManager.getLogger(EditProfileServlet.class);
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -42,7 +39,6 @@ public class EditProfileServlet extends HttpServlet {
 		UserBean oldUser;
 
 		String role = (String) session.getAttribute("role");
-		logger.info("role = " + role);
 
 		oldUser = (UserBean) session.getAttribute("userData");
 
@@ -95,11 +91,10 @@ public class EditProfileServlet extends HttpServlet {
 
 		for (int i = 0; i < city.length; i++) {
 			AddressBean userAddress = new AddressBean();
-			logger.info("addressid = " + addressid[i]);
+			
 			if (addressid[i].isEmpty()) {
 				addressid[i] = "0";
 			}
-			logger.info("addressid = " + addressid[i]);
 
 			userAddress.setAddressid(Integer.parseInt(addressid[i]));
 			userAddress.setStreetAddress(address[i]);

@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
 public class DBConnection {
 	private static DBConnection conn = null;
 	
-	private static final Logger logger = LogManager.getLogger(DBConnection.class);
+	private static Logger logger = LogManager.getLogger(DBConnection.class);
 	
 	private DBConnection() {
 		

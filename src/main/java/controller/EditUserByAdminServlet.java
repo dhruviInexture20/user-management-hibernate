@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import bean.UserBean;
@@ -19,7 +18,7 @@ import service.UserServiceImpl;
  */
 public class EditUserByAdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger logger = LogManager.getLogger(EditUserByAdminServlet.class);
+	private static Logger logger = Logger.getLogger(EditUserByAdminServlet.class);
 	
 	
 	/**

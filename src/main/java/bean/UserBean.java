@@ -18,9 +18,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import utility.PasswordSecurity;
 
@@ -52,9 +49,13 @@ public class UserBean implements Serializable {
 	private String s_question;
 	private String s_answer;
 	
+	private int otp;
+	
 //	@ColumnDefault("user")
 	private String role = "user";
 
+
+	@Lob
 	private String base64Image;
 
 	
@@ -169,4 +170,14 @@ public class UserBean implements Serializable {
 	public void setS_answer(String s_answer) {
 		this.s_answer = s_answer;
 	}
+
+	public int getOtp() {
+		return otp;
+	}
+
+	public void setOtp(int otp) {
+		this.otp = otp;
+	}
+
+
 }

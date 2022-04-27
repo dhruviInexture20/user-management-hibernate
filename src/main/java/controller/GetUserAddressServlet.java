@@ -16,7 +16,6 @@ import com.google.gson.GsonBuilder;
 
 import bean.AddressBean;
 import bean.UserBean;
-import service.AdminService;
 import service.UserService;
 import service.UserServiceImpl;
 
@@ -47,7 +46,6 @@ public class GetUserAddressServlet extends HttpServlet {
 			UserBean user = service.getUserForEdit(userid);
 			
 			addressList = user.getAddressList();
-//			addressList = service.getUserAddress(userid);
 			
 		}
 		else if (role.equals("user")) {
@@ -55,10 +53,6 @@ public class GetUserAddressServlet extends HttpServlet {
 			addressList = user.getAddressList();
 			
 		}
-		
-		
-		
-		
 		
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		out.print(gson.toJsonTree(addressList));

@@ -14,8 +14,6 @@ public interface UserService {
 
 	UserBean getUser(String email, String password);
 
-	List<AddressBean> getUserAddress(int userid);
-
 	void updateUserData(UserBean user, List<AddressBean> oldAddressList);
 
 	void deleteUser(String userid);

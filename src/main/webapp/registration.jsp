@@ -11,8 +11,8 @@
 <!-- Bootstrap -->
 <link href="assets/library/bootstrap/css/bootstrap.min.css"
 	rel="stylesheet">
-<link href="assets/library/datetimepicker/bootstrap-datetimepicker.css"
-	rel="stylesheet">
+<!-- <link href="assets/library/datetimepicker/bootstrap-datetimepicker.css"
+	rel="stylesheet"> -->
 
 
 <link href="assets/css/registration.css" rel="stylesheet">

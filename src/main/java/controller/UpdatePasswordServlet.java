@@ -43,7 +43,7 @@ public class UpdatePasswordServlet extends HttpServlet {
 			UserService userService = new UserServiceImpl();
 			userService.resetPassword(email, newPassword);
 			
-			request.setAttribute("success", "password changed");
+			request.setAttribute("success", "password updated");
 			request.getRequestDispatcher("login.jsp").forward(request, response);
 			
 			

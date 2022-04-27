@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>dhruvi</groupId>
-	<artifactId>usermanagement-main1</artifactId>
+	<artifactId>usermanagement-hibernate</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
@@ -125,7 +125,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>usermanagement-main</finalName>
+		<finalName>usermanagement-hibernate</finalName>
 		
 		<resources>
             <resource>

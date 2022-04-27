@@ -4,28 +4,23 @@ package service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.naming.AuthenticationException;
 
 import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import bean.AddressBean;
 import bean.EmailMessageBean;
 import bean.UserBean;
-import dao.AddressDao;
-import dao.AddressDaoImpl;
 import dao.UserDao;
 import dao.UserDaoImpl;
 import utility.DataUtility;
 import utility.EmailUtility;
-import utility.PasswordSecurity;
 
 public class UserServiceImpl implements UserService {
 	
-	private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
+	private static Logger logger = Logger.getLogger(UserServiceImpl.class);
 	
 	
 	public Set<String> validateUser(UserBean user, String confirmPass, String role) {
@@ -36,24 +31,20 @@ public class UserServiceImpl implements UserService {
 		
 		if(!DataUtility.isName(user.getFname())) {
 			msg.add("Please add valid FirstName");
-			logger.error("invalid fname");
 		}
 		if(!DataUtility.isName(user.getLname())) {
 			msg.add("Please add valid LastName");	
-			logger.error("invalid lname");
 		}
 		
 		if(role.equals("newUser")){
 			if(!DataUtility.isEmail(user.getEmail())) {
 				msg.add("Please enter valid Email");
-				logger.error("invalid Email");
 			}
 			else {
 				UserDao dao = new UserDaoImpl();
 				boolean isAvailable = dao.isEmailAvailable(user.getEmail());
 				if(isAvailable) {
 					msg.add("Email Already registered");
-					logger.error("Email Already Exist");
 				}
 			}
 		}
@@ -61,21 +52,17 @@ public class UserServiceImpl implements UserService {
 		
 		if(!DataUtility.isPassword(user.getPassword())) {
 			msg.add("Invalid Password");
-			logger.error("invalid password" + user.getPassword());
 		}
 		
 		if(!confirmPass.equals(user.getPassword())) {
 			msg.add("password doesn't match");
-			logger.error("Invalid confirm password");
 		}
 		
 		if(DataUtility.isNull(user.getGender())) {
 			msg.add("Select Your Gender");
-			logger.error("gender not selected");
 		}
 		if(DataUtility.isNull(user.getDob())) {
 			msg.add("Please Select your Birthdate");
-			logger.error("enter your birthdate");
 		}
 		if(DataUtility.isNull(user.getDesignation())) {
 			msg.add("Please Select designation");
@@ -124,7 +111,7 @@ public class UserServiceImpl implements UserService {
 		UserDao userDao = new UserDaoImpl();
 		UserBean user;
 		
-		user = userDao.userLogin(email);
+		user = userDao.getUser(email);
 		if(user == null || user.getUserid() == 0) {
 			return null;
 		}
@@ -134,14 +121,14 @@ public class UserServiceImpl implements UserService {
 		return null;
 	}
 
-	@Override
-	public List<AddressBean> getUserAddress(int userid){
-
-		AddressDao addressDao = new AddressDaoImpl();
-		List<AddressBean> addressList = addressDao.getAddress(userid);
-		
-		return addressList;
-	}
+//	@Override
+//	public List<AddressBean> getUserAddress(int userid){
+//
+//		AddressDao addressDao = new AddressDaoImpl();
+//		List<AddressBean> addressList = addressDao.getAddress(userid);
+//		
+//		return addressList;
+//	}
 
 	@Override
 	public void updateUserData(UserBean user, List<AddressBean> oldAddressList) {
@@ -149,33 +136,10 @@ public class UserServiceImpl implements UserService {
 		BasicConfigurator.configure();
 		
 		UserDao userDao = new UserDaoImpl();
-		AddressDao addressDao = new AddressDaoImpl();
-		
-		List<AddressBean> newAddressList = user.getAddressList();
 		
 		// update user data
 		userDao.updateUser(user);
 	
-		List<Integer> oldAddressidList = oldAddressList.stream().map( oldAddress -> oldAddress.getAddressid()).collect(Collectors.toList());
-		
-		newAddressList.stream().forEach(address -> {
-			
-			if(address.getAddressid() == 0) {
-				
-				// add address
-				addressDao.addAddress(address, user.getUserid());
-				logger.info("add" + address.getAddressid());
-			}
-			else if(oldAddressidList.contains(address.getAddressid())) {
-				// update address
-				oldAddressidList.remove(oldAddressidList.indexOf(address.getAddressid()));
-				addressDao.updateAddress(address);
-				logger.info("update" + address.getAddressid());
-			}
-		});  
-		
-		// delete address
-		oldAddressidList.stream().forEach( addressid -> addressDao.deleteAddressById(addressid));
 	}
 
 	
@@ -183,7 +147,7 @@ public class UserServiceImpl implements UserService {
 	public void deleteUser(String userid) {
 		
 		UserDao userDao = new UserDaoImpl();
-		userDao.deleteUser(userid);
+		userDao.deleteUser(Integer.parseInt(userid));
 		
 	}
 
@@ -242,27 +206,22 @@ public class UserServiceImpl implements UserService {
 		
 		UserDao userDao = new UserDaoImpl();
 		
-		PasswordSecurity secure;
-		try {
-			secure = new PasswordSecurity();
-			newPassword = secure.encrypt(newPassword);
-			
-		} catch (Exception e) {
-			logger.error(e);
-		}
-		
-		userDao.resetPass(email, newPassword);
-		
-		logger.info(email);
-		logger.info(newPassword);
-		
+		UserBean user = userDao.getUser(email);
+		user.setPassword(newPassword);
+		userDao.updateUser(user);
 	}
+		
 
 	@Override
 	public void saveOTP(String email, String otp) {
 		
 		UserDao userDao = new UserDaoImpl();
-		userDao.storeOtp(email, otp);
+		
+		UserBean user = userDao.getUser(email);
+		user.setOtp(Integer.parseInt(otp));
+		
+		userDao.updateUser(user);
+		
 		
 	}
 
@@ -270,14 +229,8 @@ public class UserServiceImpl implements UserService {
 	public int getOtpByEmail(String email) {
 		
 		UserDao userDao = new UserDaoImpl();
-		String otp = userDao.getUserOTP(email);
-		int otpInt;
-		if(otp == null) {
-			otpInt = 0;
-		}
-		else {
-			otpInt = Integer.parseInt(otp);
-		}
-		return otpInt;
+		UserBean user = userDao.getUser(email);
+		
+		return user.getOtp();
 	}
 }

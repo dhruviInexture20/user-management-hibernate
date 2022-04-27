@@ -24,7 +24,7 @@ public class DataUtility {
 		  }
 	 
 	 public static boolean isPhoneNo(String val) {
-		    String regex = "^[7-9][0-9]{9}$";
+		    String regex = "^[0-9]{10}$";
 		    if (val.matches(regex)) {
 		      return true;
 		    } else {

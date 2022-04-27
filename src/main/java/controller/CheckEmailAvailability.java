@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 import dao.UserDaoImpl;
 
 
@@ -19,7 +20,7 @@ public class CheckEmailAvailability extends HttpServlet {
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		String email = request.getParameter("email");
-		
+//		logger.info(" in email availability .... " + email);
 		UserDaoImpl userDao = new UserDaoImpl();
 		if(userDao.isEmailAvailable( email)) {
 			// email already exist

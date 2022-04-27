@@ -9,8 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 
 import service.UserService;
@@ -19,9 +17,6 @@ import service.UserServiceImpl;
 
 public class DeleteUserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	private static Logger logger = Logger.getLogger(DeleteUserServlet.class);
-	
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
@@ -29,7 +24,6 @@ public class DeleteUserServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		
 		String userid = request.getParameter("userid");
-		logger.info(userid);
 		
 		UserService userService = new UserServiceImpl();
 		userService.deleteUser(userid);
